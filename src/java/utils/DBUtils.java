@@ -23,7 +23,6 @@ public class DBUtils {
         pstm.setString(1, username);
         pstm.setString(2, password);
         ResultSet rs = pstm.executeQuery();
- 
         if (rs.next()) {
             String gender = rs.getString("gender");
             String email = rs.getString("email");
