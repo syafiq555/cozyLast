@@ -7,7 +7,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
  
-//import beans.Product;
 import beans.User;
 import beans.Medication;
  
@@ -81,27 +80,25 @@ public class DBUtils {
  
         pstm.executeUpdate();
     }
- /*
-    public static List<Product> queryProduct(Connection conn) throws SQLException {
-        String sql = "Select a.Code, a.Name, a.Price from Product a ";
+ 
+    public static ArrayList<Medication> queryMedication(Connection conn, String username) throws SQLException {
+        String sql = "Select * from reminder where username = ?";
  
         PreparedStatement pstm = conn.prepareStatement(sql);
  
         ResultSet rs = pstm.executeQuery();
-        List<Product> list = new ArrayList<Product>();
+        ArrayList<Medication> list = new ArrayList<>();
         while (rs.next()) {
-            String code = rs.getString("Code");
-            String name = rs.getString("Name");
-            float price = rs.getFloat("Price");
-            Product product = new Product();
-            product.setCode(code);
-            product.setName(name);
-            product.setPrice(price);
-            list.add(product);
+            int medicationType = rs.getInt("medicationType");
+            String medicationName = rs.getString("medicationName");
+            int medicationId = rs.getInt("medicationId");
+            String time = rs.getString("time");
+            Medication medication = new Medication(medicationId, medicationType, medicationName, username, time);
+            list.add(medication);
         }
         return list;
     }
- 
+ /*
     public static Product findProduct(Connection conn, String code) throws SQLException {
         String sql = "Select a.Code, a.Name, a.Price from Product a where a.Code=?";
  
