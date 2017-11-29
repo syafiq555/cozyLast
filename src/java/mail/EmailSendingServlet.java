@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import utils.EmailUtility;
 /**
  *
  * @author dzila
@@ -58,7 +59,7 @@ public class EmailSendingServlet extends HttpServlet {
             resultMessage = "There were an error: " + ex.getMessage();
         } finally {
             request.setAttribute("Message", resultMessage);
-            getServletContext().getRequestDispatcher("/Result.jsp").forward(
+            getServletContext().getRequestDispatcher("/WEB-INF/views/Result.jsp").forward(
                     request, response);
         }
     }

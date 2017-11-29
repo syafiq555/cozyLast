@@ -17,8 +17,10 @@ import javax.servlet.http.HttpServletResponse;
 import beans.User;
 import java.sql.Connection;
 import java.sql.SQLException;
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpSession;
 import utils.DBUtils;
+import utils.EmailUtility;
 import utils.MyUtils;
 /**
  *
@@ -27,6 +29,19 @@ import utils.MyUtils;
 @WebServlet(name = "InviteServlet", urlPatterns = {"/invite"})
 public class InviteServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
+        private String host;
+    private String port;
+    private String user;
+    private String pass;
+ 
+    public void init() {
+        // reads SMTP server setting from web.xml file
+        ServletContext context = getServletContext();
+        host = context.getInitParameter("host");
+        port = context.getInitParameter("port");
+        user = context.getInitParameter("user");
+        pass = context.getInitParameter("pass");
+    }
     
     public InviteServlet() {
         super();
@@ -44,74 +59,31 @@ public class InviteServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String username = request.getParameter("username");
-        String password1 = request.getParameter("password1");
-        String password2 = request.getParameter("password2");
-        String email = request.getParameter("email");
-        String gender = request.getParameter("gender");
-        int birthYear = Integer.parseInt(request.getParameter("birthYear"));
-        String password = null;
+        // reads form fields
+        String recipient = request.getParameter("recipient");
+        String subject = "Cozy Official Invitation";
         
-        User user = null;
-        boolean hasError = false;
-        String errorString = null;
-        
-        if (!(password1 == null ? password2 == null : password1.equals(password2))) {
-            hasError = true;
-            errorString = "Incorrect passwords combinations";
-        } else {
-            password = password1;
-            Connection conn = MyUtils.getStoredConnection(request);
-            try {
-                // Find the user in the DB.
-                user = DBUtils.findUser(conn, username);
+        String content = "Hello there "+recipient+" your friend has ask us invite you to come and to Cozy\n"
+                       + "\tYour friend is worried about your health and how you  are  managing yourself\n"
+                       + "\tWith Cozy you do not have to worry anymore about remembering your medication\n"
+                       + "\tbecause here at cozy you as the user have full control and can make us  help\n"
+                       + "\tyou remember.We at cozy provide  many  tools  that will help you manage your\n"
+                       + "\thealth.We provide reminders, interactive forums,games and much more.\n"
+                       + "\tSo come join and be apart of this great community!!";
  
-                if (user != null) {
-                    hasError = true;
-                    errorString = "User Name has been used!";
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-                hasError = true;
-                errorString = e.getMessage();
-            }
-        }
-        if (hasError) {
-            user = new User();
-            user.setUsername(username);
-            user.setPassword(password);
+        String resultMessage = "";
  
-            // Store information in request attribute, before forward.
-            request.setAttribute("errorString", errorString);
-            request.setAttribute("user", user);
- 
-            // Forward to /WEB-INF/views/login.jsp
-            RequestDispatcher dispatcher //
-                    = this.getServletContext().getRequestDispatcher("/WEB-INF/views/register.jsp");
- 
-            dispatcher.forward(request, response);
-        }
-        // If no error
-        // Store user information in Session
-        // And redirect to userInfo page.
-        else {
-            // Redirect to userInfo page.
-            try {
-                password = password1;
-                Connection conn = MyUtils.getStoredConnection(request);
-                User newUser = new User(email, password, username, gender, birthYear);
-                
-                // create the user in the DB.
-                DBUtils.createUser(conn, newUser);
-                
-            } catch (SQLException e) {
-                PrintWriter out=response.getWriter();
-                out.println(e);
-            }
-            RequestDispatcher dispatcher //
-                = this.getServletContext().getRequestDispatcher("/WEB-INF/views/login.jsp");
-
-            dispatcher.forward(request, response);
+        try {
+            EmailUtility.sendEmail(host, port, user, pass, recipient, subject,
+                    content);
+            resultMessage = "The e-mail was sent successfully";
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            resultMessage = "There were an error: " + ex.getMessage();
+        } finally {
+            request.setAttribute("Message", resultMessage);
+            getServletContext().getRequestDispatcher("/WEB-INF/views/Result.jsp").forward(
+                    request, response);
         }
     }
 }
