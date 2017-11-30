@@ -7,7 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <meta name="description" content="">
   <meta name="author" content="">
-  <title>Forum</title>
+  <title>Invite</title>
   <!-- Bootstrap core CSS-->
   <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
   <!-- Custom fonts for this template-->
@@ -19,7 +19,12 @@
 </head>
 
 <body class="fixed-nav sticky-footer bg-dark" id="page-top">
-  <jsp:include page="_header.jsp"></jsp:include>
+  <!-- Navigation-->
+   <jsp:include page="_header.jsp"></jsp:include>
+	
+  
+  
+  
   <div class="content-wrapper">
     <div class="container">
 	
@@ -38,13 +43,15 @@
     <div class="card card-login mx-auto mt-5">
       <div class="card-header">Enter Recipient Email</div>
       <div class="card-body">
-        <form>
+        <form action="EmailSendingServlet" method="post">
           <div class="form-group">
             <label for="exampleInputEmail1">Email address</label>
-            <input class="form-control" id="exampleInputEmail1" type="email" aria-describedby="emailHelp" placeholder="Enter email">
+            <input class="form-control" id="exampleInputEmail1" type="text" aria-describedby="emailHelp" placeholder="Enter email" name="recipient">
           </div>
          
-          <a class="btn btn-primary btn-block" href="view.jsp">Send</a>
+          
+          <input type="submit" value="Send" class="btn btn-primary btn-block">  
+        
         </form>
         
       </div>
@@ -77,7 +84,12 @@
       <i class="fa fa-angle-up"></i>
     </a>
 	
+	
+	
+    <!-- Logout Modal-->
     <jsp:include page="_logoutModal.jsp"></jsp:include>
+	
+	
 	
     <!-- Bootstrap core JavaScript-->
     <script src="vendor/jquery/jquery.min.js"></script>

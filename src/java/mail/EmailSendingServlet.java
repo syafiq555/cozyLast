@@ -3,33 +3,24 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package servlet;
+package mail;
 
 import java.io.IOException;
-import java.io.PrintWriter;
-import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import beans.User;
-import java.sql.Connection;
-import java.sql.SQLException;
-import javax.servlet.ServletContext;
-import javax.servlet.http.HttpSession;
-import utils.DBUtils;
 import utils.EmailUtility;
-import utils.MyUtils;
 /**
  *
- * @author User
+ * @author dzila
  */
-@WebServlet(name = "InviteServlet", urlPatterns = {"/invite"})
-public class InviteServlet extends HttpServlet {
-    private static final long serialVersionUID = 1L;
-        private String host;
+@WebServlet("/EmailSendingServlet")
+public class EmailSendingServlet extends HttpServlet {
+    private String host;
     private String port;
     private String user;
     private String pass;
@@ -42,23 +33,9 @@ public class InviteServlet extends HttpServlet {
         user = context.getInitParameter("user");
         pass = context.getInitParameter("pass");
     }
-    
-    public InviteServlet() {
-        super();
-    }
-    
-    @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        RequestDispatcher dispatcher //
-                = this.getServletContext().getRequestDispatcher("/WEB-INF/views/invite.jsp");
  
-        dispatcher.forward(request, response);
-    }
-    
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+    protected void doPost(HttpServletRequest request,
+            HttpServletResponse response) throws ServletException, IOException {
         // reads form fields
         String recipient = request.getParameter("recipient");
         String subject = "Cozy Official Invitation";

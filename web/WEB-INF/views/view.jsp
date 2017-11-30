@@ -40,7 +40,7 @@
           <div class="card text-white bg-primary o-hidden h-100">
             <div class="card-body">
               
-              <div class="mr-5">VITAMIN C</div>
+              <div class="mr-5">${medication.get(0).getMedicationName}</div>
             </div>
 			
 			

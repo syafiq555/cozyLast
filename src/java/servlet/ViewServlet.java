@@ -1,6 +1,11 @@
 package servlet;
 
+import beans.Medication;
+import beans.User;
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.sql.Connection;
+import java.sql.SQLException;
  
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -8,6 +13,10 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import utils.DBUtils;
+import utils.MyUtils;
+import java.util.ArrayList;
  
 @WebServlet(urlPatterns = { "/homePage"})
 public class ViewServlet extends HttpServlet {
@@ -20,13 +29,47 @@ public class ViewServlet extends HttpServlet {
    @Override
    protected void doGet(HttpServletRequest request, HttpServletResponse response)
            throws ServletException, IOException {
+       
+        HttpSession session = request.getSession();
+        User userInSession = MyUtils.getLoginedUser(session);
+        boolean hasError = false;
+        String errorString = null;
+        ArrayList<Medication> medication = new ArrayList<>();
+        
+        if (userInSession == null) {
+            hasError = true;
+            errorString = "Please re-login to continue using this service";
+        }
+        if (hasError) {
+            // Store information in request attribute, before forward.
+            request.setAttribute("errorString", errorString);
  
-        
-       // Forward to /WEB-INF/views/homeView.jsp
-       // (Users can not access directly into JSP pages placed in WEB-INF)
-       RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher("/WEB-INF/views/view.jsp");
-        
-       dispatcher.forward(request, response);
+            // Forward to /WEB-INF/views/login.jsp
+            RequestDispatcher dispatcher //
+                    = this.getServletContext().getRequestDispatcher("/WEB-INF/views/login.jsp");
+ 
+            dispatcher.forward(request, response);
+        }
+        // If no error
+        // Store user information in Session
+        // And redirect to userInfo page.
+        else {
+            // Redirect to userInfo page.
+            try {
+                Connection conn = MyUtils.getStoredConnection(request);
+                String username = userInSession.getUsername();
+                
+                medication = DBUtils.queryMedication(conn, username);
+                
+            } catch (SQLException e) {
+                PrintWriter out=response.getWriter();
+                out.println(e);
+            }
+            RequestDispatcher dispatcher //
+                = this.getServletContext().getRequestDispatcher("/WEB-INF/views/view.jsp");
+
+            dispatcher.forward(request, response);
+        }
         
    }
  
