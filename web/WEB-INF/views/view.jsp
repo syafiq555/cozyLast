@@ -1,6 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
-
+    <%@page import="java.util.ArrayList" %>
+    <%@page import="java.util.List" %>
+    <%@page import="beans.Medication" %>
+    <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -27,93 +30,32 @@
       <!-- Breadcrumbs-->
       <ol class="breadcrumb">
         <li class="breadcrumb-item">
-          <a>VIEW</a>
+          <a>Your reminder</a>
         </li>
       </ol>
-	  
-	  
       <!-- Icon Cards-->
+      <p style="color: red;">${errorString}</p>
       <div class="row">
-	  
-	  
-        <div class="col-xl-3 col-sm-6 mb-3">
-          <div class="card text-white bg-primary o-hidden h-100">
-            <div class="card-body">
-              
-              <div class="mr-5">${medication.get(0).getMedicationName}</div>
+          <c:forEach var="medication" items="${requestScope.list}">
+            <div class="col-xl-3 col-sm-6 mb-3">
+                <div class="card text-white bg-danger o-hidden h-100">
+                  <div class="card-body">
+                    <div class="mr-5"> <c:out value="${medication.medicationName.toUpperCase()}"/></div>
+                  </div>
+                  <a class="card-footer text-white clearfix small z-1" href="#">
+                    <span class="float-left"><c:out value="${medication.time}"/></span>
+                    <span class="float-right">
+                      <i class="fa fa-angle-right"></i>
+                    </span>
+                  </a>
+                </div>
             </div>
-			
-			
-            <a class="card-footer text-white clearfix small z-1" href="#">
-              <span class="float-left">08:00</span>
-              <span class="float-right">
-                <i class="fa fa-angle-right"></i>
-              </span>
-            </a>
-          </div>
-        </div>
-		
-		
-        <div class="col-xl-3 col-sm-6 mb-3">
-          <div class="card text-white bg-warning o-hidden h-100">
-            <div class="card-body">
-              
-              <div class="mr-5">LOPRESSOR</div>
-            </div>
-            <a class="card-footer text-white clearfix small z-1" href="#">
-              <span class="float-left">14:00</span>
-              <span class="float-right">
-                <i class="fa fa-angle-right"></i>
-              </span>
-            </a>
-          </div>
-        </div>
-		
-		
-        <div class="col-xl-3 col-sm-6 mb-3">
-          <div class="card text-white bg-success o-hidden h-100">
-            <div class="card-body">
-              
-              <div class="mr-5">PARACETAMOL</div>
-            </div>
-            <a class="card-footer text-white clearfix small z-1" href="#">
-              <span class="float-left">16:00</span>
-              <span class="float-right">
-                <i class="fa fa-angle-right"></i>
-              </span>
-            </a>
-          </div>
-        </div>
-		
-		
-        <div class="col-xl-3 col-sm-6 mb-3">
-          <div class="card text-white bg-danger o-hidden h-100">
-            <div class="card-body">
-              
-              <div class="mr-5">GLUCOPHAGE</div>
-            </div>
-            <a class="card-footer text-white clearfix small z-1" href="#">
-              <span class="float-left">20:00</span>
-              <span class="float-right">
-                <i class="fa fa-angle-right"></i>
-              </span>
-            </a>
-          </div>
-        </div>
-      </div>
-	  
-	 
-	  
-  
- 
+            </c:forEach>
           </div>
         </div>
         
       </div>
-    </div>
-	
-	
-	
+    
     <!-- /.container-fluid-->
     <!-- /.content-wrapper-->
     <footer class="sticky-footer">

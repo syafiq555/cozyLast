@@ -19,7 +19,7 @@
         <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Tables">
           <a class="nav-link" href="homePage">
             <i class="fa fa-fw fa-table"></i>
-            <span class="nav-link-text">VIEW</span>
+            <span class="nav-link-text">REMINDER</span>
           </a>
         </li>
 		

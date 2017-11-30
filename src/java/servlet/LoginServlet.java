@@ -104,7 +104,7 @@ public class LoginServlet extends HttpServlet {
             }
  
             //response.sendRedirect(request.getContextPath() + "/WEB-INF/views/view.jsp");
-            request.getRequestDispatcher("/WEB-INF/views/view.jsp").include(request, response);
+            request.getRequestDispatcher("/homePage").include(request, response);
         }
     }
  

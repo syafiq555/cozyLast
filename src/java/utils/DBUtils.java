@@ -81,13 +81,14 @@ public class DBUtils {
         pstm.executeUpdate();
     }
  
-    public static ArrayList<Medication> queryMedication(Connection conn, String username) throws SQLException {
+    public static List<Medication> queryMedication(Connection conn, String username) throws SQLException {
         String sql = "Select * from reminder where username = ?";
- 
+        
         PreparedStatement pstm = conn.prepareStatement(sql);
- 
+        pstm.setString(1, username);
+        
         ResultSet rs = pstm.executeQuery();
-        ArrayList<Medication> list = new ArrayList<>();
+        List<Medication> list = new ArrayList<>();
         while (rs.next()) {
             int medicationType = rs.getInt("medicationType");
             String medicationName = rs.getString("medicationName");
