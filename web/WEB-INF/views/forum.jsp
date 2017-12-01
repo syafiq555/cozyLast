@@ -42,12 +42,12 @@
       <div class="row">
        
 		
-        <div class="col-lg-4">
+        <div class="col-lg-8">
       
           <!-- Example Notifications Card-->
           <div class="card mb-3">
             <div class="card-header">
-              <i class="fa fa-bell-o"></i> &nbsp;&nbsp;&nbsp;&nbsp; FORUM FEED</div>
+              <i class="fa fa-bell-o"></i> &nbsp;&nbsp;&nbsp;&nbsp; THREAD</div>
             <div class="list-group list-group-flush small">
               <a class="list-group-item list-group-item-action" href="#">
                 <div class="media">
