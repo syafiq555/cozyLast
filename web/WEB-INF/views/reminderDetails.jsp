@@ -30,27 +30,41 @@
       <!-- Breadcrumbs-->
       <ol class="breadcrumb">
         <li class="breadcrumb-item">
-          <a>Your reminder</a>
+          <a>Reminder Details</a>
         </li>
       </ol>
+      <%
+          Medication medication = new Medication();
+          medication = (Medication) request.getAttribute("medication");
+          int medicationType = medication.getMedicationType();
+          String type;
+          switch(medicationType){
+              case 0:
+                  type = "Tablet";
+                  break;
+              case 1:
+                  type = "Syringe";
+                  break;
+              case 2:
+                  type = "Liquid";
+                  break;
+              default:
+                  type = "NULL";
+                  break;
+          }
+      %>
       <!-- Icon Cards-->
       <p style="color: red;">${errorString}</p>
       <div class="row">
-          <c:forEach var="medication" items="${requestScope.list}">
             <div class="col-xl-3 col-sm-6 mb-3">
                 <div class="card text-white bg-danger o-hidden h-100">
                   <div class="card-body">
-                    <div class="mr-5"> <c:out value="${medication.medicationName.toUpperCase()}"/></div>
+                    <div class="mr-5">NAME : ${medication.getMedicationName().toUpperCase()}</div>
+                    <div class="mr-5">TYPE : <%= type %></div>
+                    <div class="mr-5">TIME : ${medication.getTime()}</div>
                   </div>
-                  <a class="card-footer text-white clearfix small z-1" href="details?medicationId=<c:out value="${medication.medicationId}"/>">
-                    <span class="float-left"><c:out value="${medication.time}"/></span>
-                    <span class="float-right">
-                      <i class="fa fa-angle-right"></i>
-                    </span>
-                  </a>
                 </div>
             </div>
-            </c:forEach>
           </div>
         </div>
         

@@ -17,6 +17,7 @@ public class Medication {
     
     public Medication(int medicationId, int medicationType, String medicationName, String username, String time){
         this.medicationType = medicationType;
+        this.medicationId = medicationId;
         this.medicationName = medicationName;
         this.username = username;
         this.time = time;

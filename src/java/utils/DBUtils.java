@@ -99,24 +99,26 @@ public class DBUtils {
         }
         return list;
     }
- /*
-    public static Product findProduct(Connection conn, String code) throws SQLException {
-        String sql = "Select a.Code, a.Name, a.Price from Product a where a.Code=?";
+ 
+    public static Medication findMedication(Connection conn, int medicationId) throws SQLException {
+        String sql = "Select * from reminder a where medicationId=?";
  
         PreparedStatement pstm = conn.prepareStatement(sql);
-        pstm.setString(1, code);
+        pstm.setInt(1, medicationId);
  
         ResultSet rs = pstm.executeQuery();
  
         while (rs.next()) {
-            String name = rs.getString("Name");
-            float price = rs.getFloat("Price");
-            Product product = new Product(code, name, price);
-            return product;
+            String medicationName = rs.getString("medicationName");
+            int medicationType = rs.getInt("medicationType");
+            String username = rs.getString("username");
+            String time = rs.getString("time");
+            Medication medication = new Medication(medicationId, medicationType, medicationName, username, time);
+            return medication;
         }
         return null;
     }
- 
+ /*
     public static void updateProduct(Connection conn, Product product) throws SQLException {
         String sql = "Update Product set Name =?, Price=? where Code=? ";
  
