@@ -99,8 +99,11 @@ public class DBUtils {
             String time = rs.getString("time");
             Date date_start = new Date(rs.getDate("date_start").getTime());
             Date date_end = new Date(rs.getDate("date_end").getTime());
-            Medication medication = new Medication(medicationId, medicationType, medicationName, username, time, date_start, date_end);
-            list.add(medication);
+            Date date = new Date();
+            if(date.after(date_start) && date.before(date_end)){
+                Medication medication = new Medication(medicationId, medicationType, medicationName, username, time, date_start, date_end);
+                list.add(medication);
+            }
         }
         return list;
     }
