@@ -13,7 +13,9 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
+import java.util.Date;
+import java.text.*;
+
 
 import beans.Medication;
 import beans.User;
@@ -49,12 +51,27 @@ public class CreateReminderServlet extends HttpServlet {
         String medicationName = request.getParameter("medicationName");
         int medicationType = Integer.parseInt(request.getParameter("medicationType"));
         String time = request.getParameter("time");
+        
         HttpSession session = request.getSession();
         User userInSession = MyUtils.getLoginedUser(session);
         
         Medication medication;
         boolean hasError = false;
         String errorString = null;
+        String date1 = request.getParameter("date_start");
+        String date2 = request.getParameter("date_end");
+        Date date_start = null;
+        Date date_end = null;
+        
+        SimpleDateFormat date = new SimpleDateFormat("yyyy-MM-dd");
+        try{
+            date_start = date.parse(date1);
+            date_end = date.parse(date2);
+        }catch(ParseException e){
+            hasError = true;
+            errorString = e.getMessage();
+            
+        }
         
         if (userInSession == null) {
             hasError = true;
@@ -78,7 +95,7 @@ public class CreateReminderServlet extends HttpServlet {
             try {
                 Connection conn = MyUtils.getStoredConnection(request);
                 String username = userInSession.getUsername();
-                medication = new Medication(medicationType, medicationName, username, time);
+                medication = new Medication(medicationType, medicationName, username, time, date_start, date_end);
                 
                 // create the user in the DB.
                 DBUtils.createMedication(conn, medication);

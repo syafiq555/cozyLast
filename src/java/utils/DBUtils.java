@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Date;
  
 import beans.User;
 import beans.Medication;
@@ -69,7 +70,7 @@ public class DBUtils {
     }
     
     public static void createMedication(Connection conn, Medication medication) throws SQLException {
-        String sql = "Insert into reminder(medicationType, medicationName, username, time) values (?,?,?,?)";
+        String sql = "Insert into reminder(medicationType, medicationName, username, time, date_start , date_end) values (?,?,?,?,?,?)";
  
         PreparedStatement pstm = conn.prepareStatement(sql);
  
@@ -77,6 +78,8 @@ public class DBUtils {
         pstm.setString(2, medication.getMedicationName());
         pstm.setString(3, medication.getUsername());
         pstm.setString(4, medication.getTime());
+        pstm.setDate(5,new java.sql.Date(medication.getDate_start().getTime()));
+        pstm.setDate(6,new java.sql.Date(medication.getDate_end().getTime()));
  
         pstm.executeUpdate();
     }
@@ -94,7 +97,9 @@ public class DBUtils {
             String medicationName = rs.getString("medicationName");
             int medicationId = rs.getInt("medicationId");
             String time = rs.getString("time");
-            Medication medication = new Medication(medicationId, medicationType, medicationName, username, time);
+            Date date_start = new Date(rs.getDate("date_start").getTime());
+            Date date_end = new Date(rs.getDate("date_end").getTime());
+            Medication medication = new Medication(medicationId, medicationType, medicationName, username, time, date_start, date_end);
             list.add(medication);
         }
         return list;
@@ -113,23 +118,26 @@ public class DBUtils {
             int medicationType = rs.getInt("medicationType");
             String username = rs.getString("username");
             String time = rs.getString("time");
-            Medication medication = new Medication(medicationId, medicationType, medicationName, username, time);
+            Date date_start = new Date(rs.getDate("date_start").getTime());
+            Date date_end = new Date(rs.getDate("date_end").getTime());
+            Medication medication = new Medication(medicationId, medicationType, medicationName, username, time, date_start, date_end);
             return medication;
         }
         return null;
     }
- /*
-    public static void updateProduct(Connection conn, Product product) throws SQLException {
-        String sql = "Update Product set Name =?, Price=? where Code=? ";
+ 
+    public static void updateMedication(Connection conn, Medication medication) throws SQLException {
+        String sql = "Update reminder set medicationType =?, medicationName=? , time=? where medicationId=?";
  
         PreparedStatement pstm = conn.prepareStatement(sql);
  
-        pstm.setString(1, product.getName());
-        pstm.setFloat(2, product.getPrice());
-        pstm.setString(3, product.getCode());
+        pstm.setInt(1, medication.getMedicationType());
+        pstm.setString(2, medication.getMedicationName());
+        pstm.setString(3, medication.getTime());
+        pstm.setInt(4, medication.getMedicationId());
         pstm.executeUpdate();
     }
- 
+ /*
     public static void insertProduct(Connection conn, Product product) throws SQLException {
         String sql = "Insert into Product(Code, Name,Price) values (?,?,?)";
  

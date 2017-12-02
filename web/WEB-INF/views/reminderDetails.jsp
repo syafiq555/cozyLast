@@ -3,7 +3,9 @@
     <%@page import="java.util.ArrayList" %>
     <%@page import="java.util.List" %>
     <%@page import="beans.Medication" %>
+    <%@ page import="java.text.SimpleDateFormat" %>
     <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+    <%@ taglib prefix = "fmt" uri = "http://java.sun.com/jsp/jstl/fmt" %>
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -52,16 +54,20 @@
                   type = "NULL";
                   break;
           }
+          
+          
       %>
       <!-- Icon Cards-->
       <p style="color: red;">${errorString}</p>
       <div class="row">
-            <div class="col-xl-3 col-sm-6 mb-3">
+            <div class="col-xl-12 col-sm-6 mb-3">
                 <div class="card text-white bg-danger o-hidden h-100">
                   <div class="card-body">
                     <div class="mr-5">NAME : ${medication.getMedicationName().toUpperCase()}</div>
                     <div class="mr-5">TYPE : <%= type %></div>
                     <div class="mr-5">TIME : ${medication.getTime()}</div>
+                    <BR>
+                    <div class="mr-5"><fmt:formatDate type = "date" value = "${medication.getDate_start()}" /> - <fmt:formatDate type = "date" value = "${medication.getDate_end()}" /></div> 
                   </div>
                 </div>
             </div>
