@@ -105,7 +105,7 @@ public class CreateReminderServlet extends HttpServlet {
                 out.println(e);
             }
             RequestDispatcher dispatcher //
-                = this.getServletContext().getRequestDispatcher("/WEB-INF/views/view.jsp");
+                = this.getServletContext().getRequestDispatcher("/homePage");
 
             dispatcher.forward(request, response);
         }
