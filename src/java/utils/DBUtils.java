@@ -140,6 +140,16 @@ public class DBUtils {
         pstm.setInt(4, medication.getMedicationId());
         pstm.executeUpdate();
     }
+    
+    public static void deleteReminder(Connection conn, int medicationId) throws SQLException {
+        String sql = "Delete From reminder where medicationId= ?";
+ 
+        PreparedStatement pstm = conn.prepareStatement(sql);
+ 
+        pstm.setInt(1, medicationId);
+ 
+        pstm.executeUpdate();
+    }
  /*
     public static void insertProduct(Connection conn, Product product) throws SQLException {
         String sql = "Insert into Product(Code, Name,Price) values (?,?,?)";
@@ -149,16 +159,6 @@ public class DBUtils {
         pstm.setString(1, product.getCode());
         pstm.setString(2, product.getName());
         pstm.setFloat(3, product.getPrice());
- 
-        pstm.executeUpdate();
-    }
- 
-    public static void deleteProduct(Connection conn, String code) throws SQLException {
-        String sql = "Delete From Product where Code= ?";
- 
-        PreparedStatement pstm = conn.prepareStatement(sql);
- 
-        pstm.setString(1, code);
  
         pstm.executeUpdate();
     }*/

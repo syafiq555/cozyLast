@@ -57,11 +57,18 @@
           
           
       %>
-      <!-- Icon Cards-->
-      <p style="color: red;">${errorString}</p>
-      <div class="row">
-            <div class="col-xl-12 col-sm-6 mb-3">
-                <div class="card text-white bg-danger o-hidden h-100">
+        <!-- Icon Cards-->
+        <p style="color: red;">${errorString}</p>
+        <div class="row">
+            <div class="col-xl-12 col-sm-12 mb-12">
+                <a class="btn btn-danger btn-outline-danger" href="deleteReminder?medicationId=${medication.getMedicationId()}">Delete Reminder</a>&nbsp;&nbsp;&nbsp;&nbsp;
+                <a class="btn btn-primary btn-outline-primary " href="#">Edit Reminder</a>
+            </div>
+        </div>
+        <br>
+        <div class="row">
+            <div class="col-xl-12 col-sm-12 mb-12">
+                <div class="card text-white bg-danger o-hidden h-80">
                   <div class="card-body">
                     <div class="mr-5">NAME : ${medication.getMedicationName().toUpperCase()}</div>
                     <div class="mr-5">TYPE : <%= type %></div>
@@ -71,7 +78,7 @@
                   </div>
                 </div>
             </div>
-          </div>
+        </div>
         </div>
         
       </div>
