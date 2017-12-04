@@ -10,6 +10,8 @@ import java.util.Date;
  
 import beans.User;
 import beans.Medication;
+import beans.Thread;
+import beans.Post;
  
 public class DBUtils {
  
@@ -152,5 +154,24 @@ public class DBUtils {
         pstm.setInt(1, medicationId);
  
         pstm.executeUpdate();
+    }
+    
+    public static List<Thread> queryThread(Connection conn) throws SQLException {
+        String sql = "Select * from thread";
+        
+        PreparedStatement pstm = conn.prepareStatement(sql);
+        
+        ResultSet rs = pstm.executeQuery();
+        List<Thread> list = new ArrayList<>();
+        while (rs.next()) {
+            int threadId = rs.getInt("threadId");
+            String threadName = rs.getString("threadName");
+            String threadDetails = rs.getString("threadDetails");
+            String username = rs.getString("username");
+                Thread thread = new Thread(threadId, threadName, threadDetails, username);
+                list.add(thread);
+            
+        }
+        return list;
     }
 }
