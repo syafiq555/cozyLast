@@ -62,7 +62,6 @@
                               </div>
                             </a>
                         </c:forEach>
-                      <a class="list-group-item list-group-item-action" href="#">View all</a>
                     </div>
                 </div>
             
