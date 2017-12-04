@@ -130,14 +130,17 @@ public class DBUtils {
     }
  
     public static void updateMedication(Connection conn, Medication medication) throws SQLException {
-        String sql = "Update reminder set medicationType =?, medicationName=? , time=? where medicationId=?";
+        String sql = "Update reminder set medicationType=?, medicationName=?, username=?, time=?, date_start=? , date_end=? where medicationId=?";
  
         PreparedStatement pstm = conn.prepareStatement(sql);
  
         pstm.setInt(1, medication.getMedicationType());
         pstm.setString(2, medication.getMedicationName());
-        pstm.setString(3, medication.getTime());
-        pstm.setInt(4, medication.getMedicationId());
+        pstm.setString(3, medication.getUsername());
+        pstm.setString(4, medication.getTime());
+        pstm.setDate(5, new java.sql.Date(medication.getDate_start().getTime()));
+        pstm.setDate(6, new java.sql.Date(medication.getDate_end().getTime()));
+        pstm.setInt(7, medication.getMedicationId());
         pstm.executeUpdate();
     }
     
@@ -150,17 +153,4 @@ public class DBUtils {
  
         pstm.executeUpdate();
     }
- /*
-    public static void insertProduct(Connection conn, Product product) throws SQLException {
-        String sql = "Insert into Product(Code, Name,Price) values (?,?,?)";
- 
-        PreparedStatement pstm = conn.prepareStatement(sql);
- 
-        pstm.setString(1, product.getCode());
-        pstm.setString(2, product.getName());
-        pstm.setFloat(3, product.getPrice());
- 
-        pstm.executeUpdate();
-    }*/
- 
 }

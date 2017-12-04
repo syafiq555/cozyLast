@@ -62,7 +62,7 @@
         <div class="row">
             <div class="col-xl-12 col-sm-12 mb-12">
                 <a class="btn btn-danger btn-outline-danger" href="deleteReminder?medicationId=${medication.getMedicationId()}">Delete Reminder</a>&nbsp;&nbsp;&nbsp;&nbsp;
-                <a class="btn btn-primary btn-outline-primary " href="#">Edit Reminder</a>
+                <a class="btn btn-primary btn-outline-primary " href="editReminder?medicationId=${medication.getMedicationId()}">Edit Reminder</a>
             </div>
         </div>
         <br>
