@@ -17,6 +17,7 @@ import javax.servlet.http.HttpSession;
 import utils.DBUtils;
 import utils.MyUtils;
 import java.util.ArrayList;
+import java.util.List;
  
 @WebServlet(urlPatterns = { "/homePage"})
 public class ViewServlet extends HttpServlet {
@@ -34,7 +35,7 @@ public class ViewServlet extends HttpServlet {
         User userInSession = MyUtils.getLoginedUser(session);
         boolean hasError = false;
         String errorString = null;
-        ArrayList<Medication> medication = new ArrayList<>();
+        List<Medication> list = null;
         
         if (userInSession == null) {
             hasError = true;
@@ -55,19 +56,25 @@ public class ViewServlet extends HttpServlet {
         // And redirect to userInfo page.
         else {
             // Redirect to userInfo page.
+            Connection conn = MyUtils.getStoredConnection(request);
+            String username = userInSession.getUsername();
             try {
-                Connection conn = MyUtils.getStoredConnection(request);
-                String username = userInSession.getUsername();
-                
-                medication = DBUtils.queryMedication(conn, username);
-                
+                list = DBUtils.queryMedication(conn, username);
+                    
             } catch (SQLException e) {
                 PrintWriter out=response.getWriter();
                 out.println(e);
+                e.printStackTrace();
+                errorString = e.getMessage();
             }
+          //  String medicationName = list.get(0).getMedicationName();
+            //errorString = medicationName;
+            // Store info in request attribute, before forward to views
+            request.setAttribute("errorString", errorString);
+            //request.setAttribute("medicationName", medicationName);
+            request.setAttribute("list", list);
             RequestDispatcher dispatcher //
                 = this.getServletContext().getRequestDispatcher("/WEB-INF/views/view.jsp");
-
             dispatcher.forward(request, response);
         }
         

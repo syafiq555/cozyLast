@@ -168,7 +168,7 @@
                 </div>
               </div>
             </div>
-            <input type="submit" value="register" style="width: 37em;  height: 2em; color: white; background-color: #1538EE;">
+            <center><input type="submit" value="register" style="width: 18em;  height: 2em; color: white; background-color: #1538EE;"></center>
             <!--<a class="d-block small mt-3" href="$//{pageContext.request.contextPath}/login">Login Page</a>-->
         </form>
         <p style="color: red;">${errorString}</p>

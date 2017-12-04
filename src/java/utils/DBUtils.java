@@ -6,9 +6,12 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Date;
  
 import beans.User;
 import beans.Medication;
+import beans.Thread;
+import beans.Post;
  
 public class DBUtils {
  
@@ -69,7 +72,7 @@ public class DBUtils {
     }
     
     public static void createMedication(Connection conn, Medication medication) throws SQLException {
-        String sql = "Insert into reminder(medicationType, medicationName, username, time) values (?,?,?,?)";
+        String sql = "Insert into reminder(medicationType, medicationName, username, time, date_start , date_end) values (?,?,?,?,?,?)";
  
         PreparedStatement pstm = conn.prepareStatement(sql);
  
@@ -77,76 +80,98 @@ public class DBUtils {
         pstm.setString(2, medication.getMedicationName());
         pstm.setString(3, medication.getUsername());
         pstm.setString(4, medication.getTime());
+        pstm.setDate(5,new java.sql.Date(medication.getDate_start().getTime()));
+        pstm.setDate(6,new java.sql.Date(medication.getDate_end().getTime()));
  
         pstm.executeUpdate();
     }
  
-    public static ArrayList<Medication> queryMedication(Connection conn, String username) throws SQLException {
+    public static List<Medication> queryMedication(Connection conn, String username) throws SQLException {
         String sql = "Select * from reminder where username = ?";
- 
+        
         PreparedStatement pstm = conn.prepareStatement(sql);
- 
+        pstm.setString(1, username);
+        
         ResultSet rs = pstm.executeQuery();
-        ArrayList<Medication> list = new ArrayList<>();
+        List<Medication> list = new ArrayList<>();
         while (rs.next()) {
             int medicationType = rs.getInt("medicationType");
             String medicationName = rs.getString("medicationName");
             int medicationId = rs.getInt("medicationId");
             String time = rs.getString("time");
-            Medication medication = new Medication(medicationId, medicationType, medicationName, username, time);
-            list.add(medication);
+            Date date_start = new Date(rs.getDate("date_start").getTime());
+            Date date_end = new Date(rs.getDate("date_end").getTime());
+            Date date = new Date();
+            if(date.after(date_start) && date.before(date_end)){
+                Medication medication = new Medication(medicationId, medicationType, medicationName, username, time, date_start, date_end);
+                list.add(medication);
+            }
         }
         return list;
     }
- /*
-    public static Product findProduct(Connection conn, String code) throws SQLException {
-        String sql = "Select a.Code, a.Name, a.Price from Product a where a.Code=?";
+ 
+    public static Medication findMedication(Connection conn, int medicationId) throws SQLException {
+        String sql = "Select * from reminder a where medicationId=?";
  
         PreparedStatement pstm = conn.prepareStatement(sql);
-        pstm.setString(1, code);
+        pstm.setInt(1, medicationId);
  
         ResultSet rs = pstm.executeQuery();
  
         while (rs.next()) {
-            String name = rs.getString("Name");
-            float price = rs.getFloat("Price");
-            Product product = new Product(code, name, price);
-            return product;
+            String medicationName = rs.getString("medicationName");
+            int medicationType = rs.getInt("medicationType");
+            String username = rs.getString("username");
+            String time = rs.getString("time");
+            Date date_start = new Date(rs.getDate("date_start").getTime());
+            Date date_end = new Date(rs.getDate("date_end").getTime());
+            Medication medication = new Medication(medicationId, medicationType, medicationName, username, time, date_start, date_end);
+            return medication;
         }
         return null;
     }
  
-    public static void updateProduct(Connection conn, Product product) throws SQLException {
-        String sql = "Update Product set Name =?, Price=? where Code=? ";
+    public static void updateMedication(Connection conn, Medication medication) throws SQLException {
+        String sql = "Update reminder set medicationType=?, medicationName=?, username=?, time=?, date_start=? , date_end=? where medicationId=?";
  
         PreparedStatement pstm = conn.prepareStatement(sql);
  
-        pstm.setString(1, product.getName());
-        pstm.setFloat(2, product.getPrice());
-        pstm.setString(3, product.getCode());
+        pstm.setInt(1, medication.getMedicationType());
+        pstm.setString(2, medication.getMedicationName());
+        pstm.setString(3, medication.getUsername());
+        pstm.setString(4, medication.getTime());
+        pstm.setDate(5, new java.sql.Date(medication.getDate_start().getTime()));
+        pstm.setDate(6, new java.sql.Date(medication.getDate_end().getTime()));
+        pstm.setInt(7, medication.getMedicationId());
         pstm.executeUpdate();
     }
- 
-    public static void insertProduct(Connection conn, Product product) throws SQLException {
-        String sql = "Insert into Product(Code, Name,Price) values (?,?,?)";
+    
+    public static void deleteReminder(Connection conn, int medicationId) throws SQLException {
+        String sql = "Delete From reminder where medicationId= ?";
  
         PreparedStatement pstm = conn.prepareStatement(sql);
  
-        pstm.setString(1, product.getCode());
-        pstm.setString(2, product.getName());
-        pstm.setFloat(3, product.getPrice());
+        pstm.setInt(1, medicationId);
  
         pstm.executeUpdate();
     }
- 
-    public static void deleteProduct(Connection conn, String code) throws SQLException {
-        String sql = "Delete From Product where Code= ?";
- 
+    
+    public static List<Thread> queryThread(Connection conn) throws SQLException {
+        String sql = "Select * from thread";
+        
         PreparedStatement pstm = conn.prepareStatement(sql);
- 
-        pstm.setString(1, code);
- 
-        pstm.executeUpdate();
-    }*/
- 
+        
+        ResultSet rs = pstm.executeQuery();
+        List<Thread> list = new ArrayList<>();
+        while (rs.next()) {
+            int threadId = rs.getInt("threadId");
+            String threadName = rs.getString("threadName");
+            String threadDetails = rs.getString("threadDetails");
+            String username = rs.getString("username");
+                Thread thread = new Thread(threadId, threadName, threadDetails, username);
+                list.add(thread);
+            
+        }
+        return list;
+    }
 }

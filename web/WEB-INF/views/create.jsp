@@ -7,7 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <meta name="description" content="">
   <meta name="author" content="">
-  <title>Forum</title>
+  <title>Create Reminder</title>
   <!-- Bootstrap core CSS-->
   <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
   <!-- Custom fonts for this template-->
@@ -74,8 +74,19 @@
                     <option name='2300' value='2300'>2300</option>
                     <option name='2400' value='2400'>2400</option>
                 </select>
+                
+                <br>
 
-                <br><br>
+                <label for="date">Period medicine intakes</label>
+                
+                <br>
+                
+                <label for="date_start">FROM</label>
+                <input type="date" name="date_start" class="form-control" required>
+
+                <label for="date_end">TO</label>
+                <input type="date" name="date_end" class="form-control" required>
+                <br>
 
                 <input type="submit" value="Create Reminder" style="width: 40 em;  height: 2em; color: white; background-color: #1538EE;">
                 </div>

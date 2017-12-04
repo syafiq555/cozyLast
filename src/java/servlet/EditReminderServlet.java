@@ -6,56 +6,91 @@
 package servlet;
 
 import java.io.IOException;
-import java.io.PrintWriter;
+import java.sql.Connection;
+import java.sql.SQLException;
+ 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.Date;
-import java.text.*;
-
-
-import beans.Medication;
+ 
 import beans.User;
-import java.sql.Connection;
-import java.sql.SQLException;
+import beans.Medication;
+import java.io.PrintWriter;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import javax.servlet.http.HttpSession;
 import utils.DBUtils;
 import utils.MyUtils;
-/**
- *
- * @author User
- */
-@WebServlet(name = "CreateReminderServlet", urlPatterns = {"/create"})
-public class CreateReminderServlet extends HttpServlet {
+ 
+@WebServlet(urlPatterns = { "/editReminder" })
+public class EditReminderServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
-    
-    public CreateReminderServlet() {
+ 
+    public EditReminderServlet() {
         super();
     }
-    
+ 
+    // Show product edit page.
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        RequestDispatcher dispatcher //
-                = this.getServletContext().getRequestDispatcher("/WEB-INF/views/create.jsp");
+        Connection conn = MyUtils.getStoredConnection(request);
  
+        int medicationId = Integer.parseInt(request.getParameter("medicationId"));
+ 
+        Medication medication = null;
+ 
+        String errorString = null;
+ 
+        try {
+            medication = DBUtils.findMedication(conn, medicationId);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            errorString = e.getMessage();
+        }
+ 
+        // If no error.
+        // The product does not exist to edit.
+        // Redirect to productList page.
+        if (errorString != null && medication == null) {
+            response.sendRedirect(request.getServletPath() + "/details?medicationId="+medicationId);
+            return;
+        }
+ 
+        // Store errorString in request attribute, before forward to views.
+        request.setAttribute("errorString", errorString);
+        request.setAttribute("medication", medication);
+ 
+        RequestDispatcher dispatcher = request.getServletContext()
+                .getRequestDispatcher("/WEB-INF/views/editReminderDetails.jsp");
         dispatcher.forward(request, response);
+ 
     }
-    
+ 
+    // After the user modifies the product information, and click Submit.
+    // This method will be executed.
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        PrintWriter out=response.getWriter();
         String medicationName = request.getParameter("medicationName");
         int medicationType = Integer.parseInt(request.getParameter("medicationType"));
         String time = request.getParameter("time");
+        int medicationId = 0;
+        try{
+            medicationId = Integer.parseInt(request.getParameter("medicationId"));
+        }catch(Exception e){
+           out.println(e); 
         
+        }
         HttpSession session = request.getSession();
         User userInSession = MyUtils.getLoginedUser(session);
         
-        Medication medication;
+        Medication medication = null;
         boolean hasError = false;
         String errorString = null;
         String date1 = request.getParameter("date_start");
@@ -70,7 +105,6 @@ public class CreateReminderServlet extends HttpServlet {
         }catch(ParseException e){
             hasError = true;
             errorString = e.getMessage();
-            
         }
         
         if (userInSession == null) {
@@ -95,13 +129,12 @@ public class CreateReminderServlet extends HttpServlet {
             try {
                 Connection conn = MyUtils.getStoredConnection(request);
                 String username = userInSession.getUsername();
-                medication = new Medication(medicationType, medicationName, username, time, date_start, date_end);
+                medication = new Medication(medicationId, medicationType, medicationName, username, time, date_start, date_end);
                 
                 // create the user in the DB.
-                DBUtils.createMedication(conn, medication);
+                DBUtils.updateMedication(conn, medication);
                 
             } catch (SQLException e) {
-                PrintWriter out=response.getWriter();
                 out.println(e);
             }
             RequestDispatcher dispatcher //

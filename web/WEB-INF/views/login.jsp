@@ -24,7 +24,7 @@
           <form action="${pageContext.request.contextPath}/login" method="post">
           <div class="form-group">
             <label for="username">Username</label>
-            <input class="form-control" name="username" type="text" aria-describedby="usernameHelp" placeholder="Enter username" required>
+            <input class="form-control" name="username" type="text" aria-describedby="usernameHelp" placeholder="Enter username" required autofocus>
           </div>
           <div class="form-group">
             <label for="password">Password</label>

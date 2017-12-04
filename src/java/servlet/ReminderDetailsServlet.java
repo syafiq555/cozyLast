@@ -1,6 +1,6 @@
 package servlet;
 
-import beans.Thread;
+import beans.Medication;
 import beans.User;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -19,11 +19,11 @@ import utils.MyUtils;
 import java.util.ArrayList;
 import java.util.List;
  
-@WebServlet(urlPatterns = { "/forum"})
-public class ForumServlet extends HttpServlet {
+@WebServlet (urlPatterns = {"/details"})
+public class ReminderDetailsServlet extends HttpServlet {
    private static final long serialVersionUID = 1L;
  
-   public ForumServlet() {
+   public ReminderDetailsServlet() {
        super();
    }
  
@@ -35,7 +35,8 @@ public class ForumServlet extends HttpServlet {
         User userInSession = MyUtils.getLoginedUser(session);
         boolean hasError = false;
         String errorString = null;
-        List<Thread> list = null;
+        Medication medication = null;
+        int medicationId = Integer.parseInt(request.getParameter("medicationId"));;
         
         if (userInSession == null) {
             hasError = true;
@@ -57,9 +58,8 @@ public class ForumServlet extends HttpServlet {
         else {
             // Redirect to userInfo page.
             Connection conn = MyUtils.getStoredConnection(request);
-            String username = userInSession.getUsername();
             try {
-                list = DBUtils.queryThread(conn);
+                medication = DBUtils.findMedication(conn, medicationId);
                     
             } catch (SQLException e) {
                 PrintWriter out=response.getWriter();
@@ -72,9 +72,9 @@ public class ForumServlet extends HttpServlet {
             // Store info in request attribute, before forward to views
             request.setAttribute("errorString", errorString);
             //request.setAttribute("medicationName", medicationName);
-            request.setAttribute("list", list);
+            request.setAttribute("medication", medication);
             RequestDispatcher dispatcher //
-                = this.getServletContext().getRequestDispatcher("/WEB-INF/views/forum.jsp");
+                = this.getServletContext().getRequestDispatcher("/WEB-INF/views/reminderDetails.jsp");
             dispatcher.forward(request, response);
         }
         
