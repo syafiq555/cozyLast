@@ -20,11 +20,11 @@ import utils.MyUtils;
 import java.util.ArrayList;
 import java.util.List;
  
-@WebServlet(urlPatterns = { "/forumDetails"})
-public class ForumDetailsServlet extends HttpServlet {
+@WebServlet(urlPatterns = { "/addPost"})
+public class AddPostServlet extends HttpServlet {
    private static final long serialVersionUID = 1L;
  
-   public ForumDetailsServlet() {
+   public AddPostServlet() {
        super();
    }
  
@@ -36,9 +36,8 @@ public class ForumDetailsServlet extends HttpServlet {
         User userInSession = MyUtils.getLoginedUser(session);
         boolean hasError = false;
         String errorString = null;
-        List<ThreadPost> list = null;
-        Post post = null;
         int threadId = 0;
+        String postDetails = request.getParameter("postDetails");
         try{
             threadId = Integer.parseInt(request.getParameter("threadId"));
         }catch(Exception e){
@@ -49,7 +48,7 @@ public class ForumDetailsServlet extends HttpServlet {
  
             // Forward to /WEB-INF/views/login.jsp
             RequestDispatcher dispatcher //
-                    = this.getServletContext().getRequestDispatcher("/WEB-INF/views/forum.jsp");
+                    = this.getServletContext().getRequestDispatcher("/WEB-INF/views/ForumDetails.jsp");
             dispatcher.forward(request, response);
         }
         
@@ -72,21 +71,11 @@ public class ForumDetailsServlet extends HttpServlet {
         // And redirect to userInfo page.
         else {
             // Redirect to userInfo page.
+            String username = userInSession.getUsername();
+            Post post = new Post(postDetails, threadId, username);
             Connection conn = MyUtils.getStoredConnection(request);
             try {
-                list = DBUtils.queryThreadPost(conn, threadId);
-                if(list.isEmpty()){
-                    hasError = true;
-                    errorString = "No post yet!";
-                    
-                    post = DBUtils.findPost(conn,threadId);
-                    
-                    request.setAttribute("errorString", errorString);
-                    request.setAttribute("post", post);
-                    RequestDispatcher dispatcher //
-                        = this.getServletContext().getRequestDispatcher("/WEB-INF/views/ForumDetails.jsp");
-                    dispatcher.forward(request, response);
-                }
+                DBUtils.addPost(conn, post);
                     
             } catch (SQLException e) {
                 PrintWriter out=response.getWriter();
@@ -98,10 +87,8 @@ public class ForumDetailsServlet extends HttpServlet {
             //errorString = medicationName;
             // Store info in request attribute, before forward to views
             request.setAttribute("errorString", errorString);
-            //request.setAttribute("medicationName", medicationName);
-            request.setAttribute("list", list);
             RequestDispatcher dispatcher //
-                = this.getServletContext().getRequestDispatcher("/WEB-INF/views/ForumDetails.jsp");
+                = this.getServletContext().getRequestDispatcher("/forumDetails");
             dispatcher.forward(request, response);
         }
         

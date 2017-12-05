@@ -131,6 +131,24 @@ public class DBUtils {
         }
         return null;
     }
+    
+    public static Post findPost(Connection conn, int threadId) throws SQLException {
+        String sql = "Select * from post where threadId=?";
+ 
+        PreparedStatement pstm = conn.prepareStatement(sql);
+ 
+        pstm.setInt(1, threadId);
+        ResultSet rs = pstm.executeQuery();
+ 
+        while (rs.next()) {
+            int postId = rs.getInt("postId");
+            String postDetails = rs.getString("postDetails");
+            String postUsername = rs.getString("postUsername");
+            Post post = new Post(postId, postDetails, threadId, postUsername);
+            return post;
+        }
+        return null;
+    }
  
     public static void updateMedication(Connection conn, Medication medication) throws SQLException {
         String sql = "Update reminder set medicationType=?, medicationName=?, username=?, time=?, date_start=? , date_end=? where medicationId=?";
@@ -225,5 +243,37 @@ public class DBUtils {
         pstm.setString(3, thread.getUsername());
  
         pstm.executeUpdate();
+    }
+    
+    public static void addPost(Connection conn, Post post) throws SQLException {
+        String sql = "Insert into post(postDetails, threadId, postUsername) values (?,?,?)";
+ 
+        PreparedStatement pstm = conn.prepareStatement(sql);
+ 
+        pstm.setString(1, post.getPostDetails());
+        pstm.setInt(2, post.getThreadId());
+        pstm.setString(3, post.getPostUsername());
+ 
+        pstm.executeUpdate();
+    }
+    
+    public static List<Thread> searchThread(Connection conn, String string) throws SQLException {
+        String sql = "Select * from thread where threadName like ?";
+ 
+        PreparedStatement pstm = conn.prepareStatement(sql);
+        pstm.setString(1, "%" + string + "%");
+        
+        ResultSet rs = pstm.executeQuery();
+        List<Thread> list = new ArrayList<>();
+        while (rs.next()) {
+            int threadId = rs.getInt("threadId");
+            String threadName = rs.getString("threadName");
+            String threadDetails = rs.getString("threadDetails");
+            String username = rs.getString("username");
+            Thread thread = new Thread(threadId, threadName, threadDetails, username);
+            list.add(thread);
+            
+        }
+        return list;
     }
 }

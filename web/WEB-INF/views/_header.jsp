@@ -7,7 +7,7 @@
 <!-- Navigation-->
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" id="mainNav">
     <a href="javascript:history.go(-1)"><img style="width:40px;height:40px;" 
-    src="https://fthmb.tqn.com/YlsCi3otBMk-wSHDoWRYPGviG84=/768x0/filters:no_upscale()/RedButton_LeftArrow.svg-58014c285f9b5805c222f65f.png"></a>
+    src="back.png"></a>
     <a class="navbar-brand" href="homePage">COZY</a>
     <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>

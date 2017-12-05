@@ -1,7 +1,7 @@
 package servlet;
 
 import beans.Post;
-import beans.ThreadPost;
+import beans.Thread;
 import beans.User;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -20,11 +20,11 @@ import utils.MyUtils;
 import java.util.ArrayList;
 import java.util.List;
  
-@WebServlet(urlPatterns = { "/forumDetails"})
-public class ForumDetailsServlet extends HttpServlet {
+@WebServlet(urlPatterns = { "/forumSearch"})
+public class forumSearchServlet extends HttpServlet {
    private static final long serialVersionUID = 1L;
  
-   public ForumDetailsServlet() {
+   public forumSearchServlet() {
        super();
    }
  
@@ -36,27 +36,27 @@ public class ForumDetailsServlet extends HttpServlet {
         User userInSession = MyUtils.getLoginedUser(session);
         boolean hasError = false;
         String errorString = null;
-        List<ThreadPost> list = null;
-        Post post = null;
-        int threadId = 0;
-        try{
-            threadId = Integer.parseInt(request.getParameter("threadId"));
-        }catch(Exception e){
+        List<Thread> list = null;
+        String string = request.getParameter("string");
+        
+        if (userInSession == null) {
             hasError = true;
-            errorString = e.getMessage();
+            errorString = "Please re-login to continue using this service";
+        }
+        
+        if(string == null){
+            hasError = true;
+            errorString = "You search for an empty string!";
             
             request.setAttribute("errorString", errorString);
  
             // Forward to /WEB-INF/views/login.jsp
             RequestDispatcher dispatcher //
                     = this.getServletContext().getRequestDispatcher("/WEB-INF/views/forum.jsp");
+ 
             dispatcher.forward(request, response);
         }
         
-        if (userInSession == null) {
-            hasError = true;
-            errorString = "Please re-login to continue using this service";
-        }
         if (hasError) {
             // Store information in request attribute, before forward.
             request.setAttribute("errorString", errorString);
@@ -74,15 +74,12 @@ public class ForumDetailsServlet extends HttpServlet {
             // Redirect to userInfo page.
             Connection conn = MyUtils.getStoredConnection(request);
             try {
-                list = DBUtils.queryThreadPost(conn, threadId);
+                list = DBUtils.searchThread(conn, string);
                 if(list.isEmpty()){
                     hasError = true;
-                    errorString = "No post yet!";
-                    
-                    post = DBUtils.findPost(conn,threadId);
+                    errorString = "There's not thread named "+string+" that you are looking for";
                     
                     request.setAttribute("errorString", errorString);
-                    request.setAttribute("post", post);
                     RequestDispatcher dispatcher //
                         = this.getServletContext().getRequestDispatcher("/WEB-INF/views/ForumDetails.jsp");
                     dispatcher.forward(request, response);
@@ -101,7 +98,7 @@ public class ForumDetailsServlet extends HttpServlet {
             //request.setAttribute("medicationName", medicationName);
             request.setAttribute("list", list);
             RequestDispatcher dispatcher //
-                = this.getServletContext().getRequestDispatcher("/WEB-INF/views/ForumDetails.jsp");
+                = this.getServletContext().getRequestDispatcher("/WEB-INF/views/searchedForum.jsp");
             dispatcher.forward(request, response);
         }
         

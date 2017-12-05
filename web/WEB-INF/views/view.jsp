@@ -36,6 +36,7 @@
       <!-- Icon Cards-->
       <p style="color: red;">${errorString}</p>
       <div class="row">
+          &nbsp;&nbsp;&nbsp;<p><a href="create">Click here to Create Reminder</a></p>
           <c:forEach var="medication" items="${requestScope.list}">
             <div class="col-xl-3 col-sm-6 mb-3">
                 <div class="card text-white bg-danger o-hidden h-100">

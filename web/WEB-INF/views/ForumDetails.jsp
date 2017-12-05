@@ -37,17 +37,16 @@
           <a>FORUM</a>
         </li>
       </ol>
-	  
-	
-	 
-	  
+      
+      
+      
       <div class="row">
         <div class="col-lg-8">
             ${errorString}
             <!-- Example Notifications Card-->
             <div class="card mb-3">
               <div class="card-header">
-                  <i class="fa fa-fw fa-list"></i> &nbsp;&nbsp;&nbsp;&nbsp;${list.get(0).getUsername().toUpperCase()}'S THREAD: <strong>${list.get(0).getThreadName().toUpperCase()}</strong></div>
+                  <i class="fa fa-fw fa-list"></i> &nbsp;&nbsp;&nbsp;&nbsp;${list.get(0).getUsername().toUpperCase()}'S THREAD:</div>
                     <div class="list-group list-group-flush medium">
                             <a class="list-group-item list-group-item-action">
                               <div class="media">
@@ -82,6 +81,19 @@
                         </c:forEach>
                     </div>
                 </div>
+                    
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item">
+                        <a>ADD POST TO THIS THREAD</a>
+                    </li>
+                </ol>
+                <form action="addPost" method="get">
+                    <div class="card mb-3">
+                        <textarea name="postDetails" id="postDetails" style="width:100%;height:150px;background-color: #004085; color:olive;border:none;padding:2%;font:18px/25px sans-serif;background:url('/pix/samples/bubble2.gif');"placeholder="ADD NEW THREAD..."></textarea>  
+                    </div>
+                    <input type="hidden" name="threadId" value="<%= request.getParameter("threadId") %>">
+                    <input type="submit" value="Submit" style="width: 100%;background-color: #007bff;color:white;padding:5px;font-size:18px;border:none;padding:8px;">
+                </form>
             
         </div>
       </div>

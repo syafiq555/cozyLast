@@ -38,6 +38,18 @@
         </li>
       </ol>
       ${errorString}
+      
+      <form action="forumSearch">
+        <div class="input-group">
+          <input class="form-control" type="text" placeholder="Search forum" name="string">
+          <span class="input-group-btn">
+            <button class="btn btn-primary" type="input">
+              <i class="fa fa-search"></i>
+            </button>
+          </span>
+        </div>
+      </form>
+      <br>
       <div class="row">
         <div class="col-lg-8">
             
@@ -47,7 +59,7 @@
                 <i class="fa fa-fw fa-list"></i> &nbsp;&nbsp;&nbsp;&nbsp; THREAD</div>
                     <div class="list-group list-group-flush medium">
                         <c:forEach var="thread" items="${requestScope.list}" begin="0" end="4">
-                            <a class="list-group-item list-group-item-action" href="forumDetails?threadId=<c:out value="${thread.threadId}"/>">
+                            <a class="list-group-item list-group-item-action" href="forumDetails?threadId=<c:out value="${thread.threadId}"/>&threadName=<c:out value="${thread.threadName}"/>&threadDetails=<c:out value="${thread.threadDetails}"/>&username=<c:out value="${thread.username}"/>">
                               <div class="media">
                                   <div class="media-body">
                                   <div> <strong><c:out value="${thread.threadName.toUpperCase()}"/></strong> </div>

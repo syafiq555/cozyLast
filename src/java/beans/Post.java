@@ -17,6 +17,12 @@ public class Post {
         
     }
     
+    public Post(String postDetails, int threadId, String postUsername){
+        this.threadId = threadId;
+        this.postDetails = postDetails;
+        this.postUsername = postUsername;
+    }
+    
     public Post(int postId, String postDetails, int threadId, String postUsername){
         this.threadId = threadId;
         this.postId = postId;
