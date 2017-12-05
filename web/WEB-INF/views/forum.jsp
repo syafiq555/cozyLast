@@ -80,10 +80,10 @@
                 </ol>
                 <form action="addThread" method="post">
                     <div class="card mb-3">
-                        <input type="text" placeholder="Thread's title" name='threadName'>
+                        <input type="text" placeholder="Thread's title" required name='threadName'>
                     </div>
                     <div class="card mb-3">
-                        <textarea name="threadDetails" id="newThread" style="width:100%;height:150px;background-color: #004085; color:olive;border:none;padding:2%;font:18px/25px sans-serif;background:url('/pix/samples/bubble2.gif');"placeholder="ADD NEW THREAD..."></textarea>  
+                        <textarea required name="threadDetails" id="newThread" style="width:100%;height:150px;background-color: #004085; color:olive;border:none;padding:2%;font:18px/25px sans-serif;background:url('/pix/samples/bubble2.gif');"placeholder="ADD NEW THREAD..."></textarea>  
                     </div>
                     <input type="submit" value="Submit" style="width: 100%;background-color: #007bff;color:white;padding:5px;font-size:18px;border:none;padding:8px;">
                 </form>

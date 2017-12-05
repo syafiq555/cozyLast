@@ -89,10 +89,10 @@
                 </ol>
                 <form action="addPost" method="get">
                     <div class="card mb-3">
-                        <textarea name="postDetails" id="postDetails" style="width:100%;height:150px;background-color: #004085; color:olive;border:none;padding:2%;font:18px/25px sans-serif;background:url('/pix/samples/bubble2.gif');"placeholder="ADD NEW THREAD..."></textarea>  
+                        <textarea required name="postDetails" id="postDetails" style="width:100%;height:150px;background-color: #004085; color:olive;border:none;padding:2%;font:18px/25px sans-serif;background:url('/pix/samples/bubble2.gif');"placeholder="POST TO THIS THREAD..."></textarea>  
                     </div>
                     <input type="hidden" name="threadId" value="<%= request.getParameter("threadId") %>">
-                    <input type="submit" value="Submit" style="width: 100%;background-color: #007bff;color:white;padding:5px;font-size:18px;border:none;padding:8px;">
+                    <input type="submit" required value="Submit" style="width: 100%;background-color: #007bff;color:white;padding:5px;font-size:18px;border:none;padding:8px;">
                 </form>
             
         </div>

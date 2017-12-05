@@ -9,6 +9,7 @@
   <meta name="author" content="">
   <title>Create Reminder</title>
   <!-- Bootstrap core CSS-->
+<a href="create.jsp"></a>
   <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
   <!-- Custom fonts for this template-->
   <link href="vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
@@ -82,11 +83,15 @@
                 <br>
                 
                 <label for="date_start">FROM</label>
-                <input type="date" name="date_start" class="form-control" required>
+                <input type="date" id="date_start" name="date_start" class="form-control" required>
 
                 <label for="date_end">TO</label>
-                <input type="date" name="date_end" class="form-control" required>
+                <input type="date" id="date_end" name="date_end" class="form-control" required>
                 <br>
+                <script>
+                    document.getElementById("date_start").valueAsDate = new Date();
+                    document.getElementById("date_end").valueAsDate = new Date();
+                </script>
 
                 <input type="submit" value="Create Reminder" style="width: 100%;background-color: #007bff;color:white;padding:5px;font-size:18px;border:none;padding:8px;">
                 </div>
