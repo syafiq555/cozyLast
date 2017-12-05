@@ -45,17 +45,18 @@
           
 		
         <div class="col-lg-8">
+            ${errorString}
             <!-- Example Notifications Card-->
             <div class="card mb-3">
               <div class="card-header">
                 <i class="fa fa-fw fa-list"></i> &nbsp;&nbsp;&nbsp;&nbsp; THREAD</div>
                     <div class="list-group list-group-flush medium">
                         <c:forEach var="thread" items="${requestScope.list}" begin="0" end="5">
-                            <a class="list-group-item list-group-item-action" href="#">
+                            <a class="list-group-item list-group-item-action" href="forumDetails?threadId=<c:out value="${thread.threadId}"/>">
                               <div class="media">
                                   <div class="media-body">
                                   <div> <strong><c:out value="${thread.threadName.toUpperCase()}"/></strong> </div>
-                                  <c:out value="${thread.username}"/>: <c:out value="${thread.threadDetails}"/>
+                                  <strong><c:out value="${thread.username}"/></strong>  : <c:out value="${thread.threadDetails}"/>
                                   <div class="text-muted smaller">Today at 5:43 PM - 5m ago</div>
                                 </div>
                               </div>
@@ -63,6 +64,19 @@
                         </c:forEach>
                     </div>
                 </div>
+            
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item">
+                        <a>POST NEW THREAD</a>
+                    </li>
+                </ol>
+                <form action="/html/tags/html_form_tag_action.cfm" method="post">
+                    <div class="card mb-3">
+                        <textarea name="newThread" id="newThread" style="width:100%;height:90px;background-color: #004085; color:olive;border:none;padding:2%;font:18px/25px sans-serif;background:url('/pix/samples/bubble2.gif');"placeholder="ADD NEW THREAD..."></textarea>
+                        
+                    </div>
+                    <input type="submit" value="Submit" style="width: 100%;background-color: #007bff;color:white;padding:5px;font-size:18px;border:none;padding:8px;">
+                </form>
             
         </div>
       </div>
@@ -72,9 +86,6 @@
  
           </div>
         </div>
-        
-      </div>
-    </div>
 	
 	
 	

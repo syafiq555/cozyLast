@@ -10,23 +10,42 @@ package beans;
  * @author User
  */
 public class Post {
-    String postId, postDetails;
+    private String postDetails, postUsername;
+    private int threadId, postId;
     
     public Post(){
         
     }
     
-    public Post(String postId, String postDetails){
+    public Post(int postId, String postDetails, int threadId, String postUsername){
+        this.threadId = threadId;
         this.postId = postId;
         this.postDetails = postDetails;
+        this.postUsername = postUsername;
     }
     
-    public void setPostId(String postId){
+    public String getPostUsername(){
+        return postUsername;
+    }
+    
+    public void setPostUsername(String postUsername){
+        this.postUsername = postUsername;
+    }
+    
+    public void setPostId(int postId){
         this.postId = postId;
     }
     
-    public String getPostId(){
+    public int getPostId(){
         return postId;
+    }
+    
+    public void setThreadId(int threadId){
+        this.threadId = threadId;
+    }
+    
+    public int getThreadId(){
+        return threadId;
     }
     
     public void setPostDetails(String postDetails){

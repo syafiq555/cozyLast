@@ -12,6 +12,7 @@ import beans.User;
 import beans.Medication;
 import beans.Thread;
 import beans.Post;
+import beans.ThreadPost;
  
 public class DBUtils {
  
@@ -170,6 +171,45 @@ public class DBUtils {
             String username = rs.getString("username");
                 Thread thread = new Thread(threadId, threadName, threadDetails, username);
                 list.add(thread);
+            
+        }
+        return list;
+    }
+    
+    public static List<ThreadPost> queryThreadPost(Connection conn, int threadId) throws SQLException {
+        String sql = "SELECT * FROM post join thread on post.threadId = thread.threadId WHERE post.threadId=?;";
+        
+        PreparedStatement pstm = conn.prepareStatement(sql);
+        pstm.setInt(1, threadId);
+        ResultSet rs = pstm.executeQuery();
+        List<ThreadPost> list = new ArrayList<>();
+        while (rs.next()) {
+            String threadName = rs.getString("threadName");
+            String threadDetails = rs.getString("threadDetails");
+            String username = rs.getString("username");
+            String postDetails = rs.getString("postDetails");
+            String postUsername = rs.getString("postUsername");
+            int postId = rs.getInt("postId");
+                ThreadPost threadPost = new ThreadPost(postId, postDetails, threadId, threadName, threadDetails, username, postUsername);
+                list.add(threadPost);
+            
+        }
+        return list;
+    }
+    
+    public static List<Post> queryPost(Connection conn, int threadId) throws SQLException {
+        String sql = "Select * from post where threadId=?";
+        
+        PreparedStatement pstm = conn.prepareStatement(sql);
+        pstm.setInt(1, threadId);
+        ResultSet rs = pstm.executeQuery();
+        List<Post> list = new ArrayList<>();
+        while (rs.next()) {
+            String postDetails = rs.getString("postDetails");
+            int postId = rs.getInt("postId");
+            String postUsername = rs.getString("postUsername");
+                Post post = new Post(postId, postDetails, threadId, postUsername);
+                list.add(post);
             
         }
         return list;
