@@ -74,6 +74,15 @@ public class ForumDetailsServlet extends HttpServlet {
             Connection conn = MyUtils.getStoredConnection(request);
             try {
                 list = DBUtils.queryThreadPost(conn, threadId);
+                if(list.isEmpty()){
+                    hasError = true;
+                    errorString = "No post yet!";
+                    
+                    request.setAttribute("errorString", errorString);
+                    RequestDispatcher dispatcher //
+                        = this.getServletContext().getRequestDispatcher("/WEB-INF/views/ForumDetails.jsp");
+                    dispatcher.forward(request, response);
+                }
                     
             } catch (SQLException e) {
                 PrintWriter out=response.getWriter();

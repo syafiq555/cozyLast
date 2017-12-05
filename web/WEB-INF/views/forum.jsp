@@ -37,21 +37,16 @@
           <a>FORUM</a>
         </li>
       </ol>
-	  
-	
-	 
-	  
+      ${errorString}
       <div class="row">
-          
-		
         <div class="col-lg-8">
-            ${errorString}
+            
             <!-- Example Notifications Card-->
             <div class="card mb-3">
               <div class="card-header">
                 <i class="fa fa-fw fa-list"></i> &nbsp;&nbsp;&nbsp;&nbsp; THREAD</div>
                     <div class="list-group list-group-flush medium">
-                        <c:forEach var="thread" items="${requestScope.list}" begin="0" end="5">
+                        <c:forEach var="thread" items="${requestScope.list}" begin="0" end="4">
                             <a class="list-group-item list-group-item-action" href="forumDetails?threadId=<c:out value="${thread.threadId}"/>">
                               <div class="media">
                                   <div class="media-body">
@@ -62,6 +57,7 @@
                               </div>
                             </a>
                         </c:forEach>
+                        <a class="list-group-item list-group-item-action" href="forum?all=true">View all thread...</a>
                     </div>
                 </div>
             
@@ -70,25 +66,22 @@
                         <a>POST NEW THREAD</a>
                     </li>
                 </ol>
-                <form action="/html/tags/html_form_tag_action.cfm" method="post">
+                <form action="addThread" method="post">
                     <div class="card mb-3">
-                        <textarea name="newThread" id="newThread" style="width:100%;height:90px;background-color: #004085; color:olive;border:none;padding:2%;font:18px/25px sans-serif;background:url('/pix/samples/bubble2.gif');"placeholder="ADD NEW THREAD..."></textarea>
-                        
+                        <input type="text" placeholder="Thread's title" name='threadName'>
+                    </div>
+                    <div class="card mb-3">
+                        <textarea name="threadDetails" id="newThread" style="width:100%;height:150px;background-color: #004085; color:olive;border:none;padding:2%;font:18px/25px sans-serif;background:url('/pix/samples/bubble2.gif');"placeholder="ADD NEW THREAD..."></textarea>  
                     </div>
                     <input type="submit" value="Submit" style="width: 100%;background-color: #007bff;color:white;padding:5px;font-size:18px;border:none;padding:8px;">
                 </form>
             
         </div>
       </div>
-	  
-	  
-	  
- 
-          </div>
-        </div>
-	
-	
-	
+            <br>
+    </div>
+   </div>
+            
     <!-- /.container-fluid-->
     <!-- /.content-wrapper-->
     <footer class="sticky-footer">

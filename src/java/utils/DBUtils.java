@@ -103,7 +103,7 @@ public class DBUtils {
             Date date_start = new Date(rs.getDate("date_start").getTime());
             Date date_end = new Date(rs.getDate("date_end").getTime());
             Date date = new Date();
-            if(date.after(date_start) && date.before(date_end)){
+            if(date.after(date_start) && date.before(date_end) || date.equals(date)){
                 Medication medication = new Medication(medicationId, medicationType, medicationName, username, time, date_start, date_end);
                 list.add(medication);
             }
@@ -158,7 +158,7 @@ public class DBUtils {
     }
     
     public static List<Thread> queryThread(Connection conn) throws SQLException {
-        String sql = "Select * from thread";
+        String sql = "Select * from thread order by threadId desc;";
         
         PreparedStatement pstm = conn.prepareStatement(sql);
         
@@ -213,5 +213,17 @@ public class DBUtils {
             
         }
         return list;
+    }
+    
+    public static void createThread(Connection conn, Thread thread) throws SQLException {
+        String sql = "Insert into Thread(threadName, threadDetails, username) values (?,?,?)";
+ 
+        PreparedStatement pstm = conn.prepareStatement(sql);
+ 
+        pstm.setString(1, thread.getThreadName());
+        pstm.setString(2, thread.getThreadDetails());
+        pstm.setString(3, thread.getUsername());
+ 
+        pstm.executeUpdate();
     }
 }

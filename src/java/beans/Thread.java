@@ -8,6 +8,12 @@ public class Thread {
         
     }
     
+    public Thread(String threadName, String threadDetails, String username){
+        this.threadName = threadName;
+        this.threadDetails = threadDetails;
+        this.username = username;
+    }
+    
     public Thread(int threadId, String threadName, String threadDetails, String username){
         this.threadId = threadId;
         this.threadName = threadName;
