@@ -38,20 +38,25 @@
         </li>
       </ol>
       ${errorString}
-      
-      <form action="forumSearch">
-        <div class="input-group">
-          <input class="form-control" type="text" placeholder="Search forum" name="string">
-          <span class="input-group-btn">
-            <button class="btn btn-primary" type="input">
-              <i class="fa fa-search"></i>
-            </button>
-          </span>
+      <div class="col-lg-12">
+        <form action="forumSearch">
+          <div class="input-group">
+            <input class="form-control" type="text" placeholder="Search forum" name="string">
+            <span class="input-group-btn">
+              <button class="btn btn-danger" type="input">
+                <i class="fa fa-search"></i>
+              </button>
+            </span>
+          </div>
+        </form><br>
+        <div class="col-lg-12">
+            <a class="btn btn-primary btn-block" href="myForum">Click here to view your Threads</a>
         </div>
-      </form>
+      </div>
+      
       <br>
       <div class="row">
-        <div class="col-lg-8">
+        <div class="col-lg-12">
             
             <!-- Example Notifications Card-->
             <div class="card mb-3">
@@ -80,10 +85,10 @@
                 </ol>
                 <form action="addThread" method="post">
                     <div class="card mb-3">
-                        <input type="text" placeholder="Thread's title" required name='threadName'>
+                        <input type="text" placeholder="Thread's title" required name='threadName' class="form-control">
                     </div>
                     <div class="card mb-3">
-                        <textarea required name="threadDetails" id="newThread" style="width:100%;height:150px;background-color: #004085; color:olive;border:none;padding:2%;font:18px/25px sans-serif;background:url('/pix/samples/bubble2.gif');"placeholder="ADD NEW THREAD..."></textarea>  
+                        <textarea class="form-control" required name="threadDetails" id="newThread" style="width:100%;height:150px;background-color: #004085; color:olive;border:none;padding:2%;font:18px/25px sans-serif;background:url('/pix/samples/bubble2.gif');"placeholder="Add new thread..."></textarea>  
                     </div>
                     <input type="submit" value="Submit" style="width: 100%;background-color: #007bff;color:white;padding:5px;font-size:18px;border:none;padding:8px;">
                 </form>

@@ -41,8 +41,7 @@
       
       
       <div class="row">
-        <div class="col-lg-8">
-            ${errorString}
+        <div class="col-lg-12">
             <!-- Example Notifications Card-->
             <div class="card mb-3">
               <div class="card-header">
@@ -62,7 +61,7 @@
             
         </div>
 		
-        <div class="col-lg-8">
+        <div class="col-lg-12">
             <!-- Example Notifications Card-->
             <div class="card mb-3">
               <div class="card-header">
@@ -79,6 +78,7 @@
                               </div>
                             </a>
                         </c:forEach>
+                        <br><p style="color: blue;">&nbsp;&nbsp;&nbsp;${errorString} Add post to this thread below!</p>
                     </div>
                 </div>
                     

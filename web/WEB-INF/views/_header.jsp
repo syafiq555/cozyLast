@@ -6,7 +6,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!-- Navigation-->
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" id="mainNav">
-    <a href="javascript:history.go(-1)"><img style="width:40px;height:40px;" 
+    <a href="javascript:history.go(-1)"><img src="back.png" style="width:40px;height:40px;" 
     src="back.png"></a>
     <a class="navbar-brand" href="homePage">COZY</a>
     <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
@@ -21,7 +21,7 @@
         <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Tables">
           <a class="nav-link" href="homePage">
             <i class="fa fa-fw fa-table"></i>
-            <span class="nav-link-text">REMINDER</span>
+            <span class="nav-link-text">YOUR REMINDER</span>
           </a>
         </li>
 		
@@ -31,7 +31,7 @@
         <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Example Pages">
           <a class="nav-link " href="create">
             <i class="fa fa-fw fa-file"></i>
-            <span class="nav-link-text">CREATE</span>
+            <span class="nav-link-text">CREATE REMINDER</span>
           </a>
         </li>
 		

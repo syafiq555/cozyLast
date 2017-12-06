@@ -1,16 +1,20 @@
 <!DOCTYPE html>
 <html lang="en">
+    
+
 <head>
     <%@page import="java.util.ArrayList" %>
     <%@page import="java.util.List" %>
-    <%@page import="beans.Medication" %>
+    <%@page import="beans.Thread" %>
     <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+    
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="">
-    <title>View</title>
+
+    <title>Forum</title>
     <!-- Bootstrap core CSS-->
     <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <!-- Custom fonts for this template-->
@@ -22,7 +26,7 @@
 </head>
 
 <body class="fixed-nav sticky-footer bg-dark" id="page-top">
-  <jsp:include page="_header.jsp"></jsp:include>
+  <jsp:include page="_header.jsp"></jsp:include>  
   <div class="content-wrapper">
     <div class="container">
 	
@@ -30,34 +34,41 @@
       <!-- Breadcrumbs-->
       <ol class="breadcrumb">
         <li class="breadcrumb-item">
-          <a>Your reminder</a>
+          <a>FORUM</a>
         </li>
       </ol>
-      <!-- Icon Cards-->
-      <p style="color: red;">${errorString}</p>
-      <div class="row">
-          <c:forEach var="medication" items="${requestScope.list}">
-            <div class="col-xl-3 col-sm-6 mb-3">
-                <div class="card text-white bg-danger o-hidden h-100">
-                  <div class="card-body">
-                    <div class="mr-5"> <c:out value="${medication.medicationName.toUpperCase()}"/></div>
-                  </div>
-                  <a class="card-footer text-white clearfix small z-1" href="details?medicationId=<c:out value="${medication.medicationId}"/>">
-                    <span class="float-left">Click for details</span>
-                    <span class="float-right">
-                      <i class="fa fa-angle-right"></i>
-                    </span>
-                  </a>
-                </div>
-            </div>
-          </c:forEach>
-          &nbsp;&nbsp;&nbsp;<p><a href="create">Click here to Create Reminder</a></p>
+      ${errorString}
+      <div class="col-lg-12">
+        <div class="col-lg-3">
+            <a class="btn btn-success btn-block" href="myForum">My Threads</a>
         </div>
-      
-        </div>
-        
       </div>
-    
+      
+      <br>
+      <div class="row">
+        <div class="col-lg-12">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item">
+                    <a>POST NEW THREAD</a>
+                </li>
+            </ol>
+            <form action="editThread" method="post">
+                <input type="hidden" placeholder="Thread's id" value="${thread.getThreadId()}" required name='threadId' class="form-control">
+                <div class="card mb-3">
+                    <input type="text" placeholder="Thread's title" value="${thread.getThreadName()}" required name='threadName' class="form-control">
+                </div>
+                <div class="card mb-3">
+                    <textarea class="form-control" required name="threadDetails" id="threadDetails" style="width:100%;height:150px;background-color: #004085; color:olive;border:none;padding:2%;font:18px/25px sans-serif;background:url('/pix/samples/bubble2.gif');" placeholder="Add new thread...">${thread.getThreadDetails()}
+                    </textarea>  
+                </div>
+                <input type="submit" value="Submit" style="width: 100%;background-color: #007bff;color:white;padding:5px;font-size:18px;border:none;padding:8px;">
+            </form>
+        </div>
+      </div>
+            <br>
+    </div>
+   </div>
+            
     <!-- /.container-fluid-->
     <!-- /.content-wrapper-->
     <footer class="sticky-footer">
@@ -76,7 +87,7 @@
     </a>
 	
     <jsp:include page="_logoutModal.jsp"></jsp:include>
-    
+	
     <!-- Bootstrap core JavaScript-->
     <script src="vendor/jquery/jquery.min.js"></script>
     <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>

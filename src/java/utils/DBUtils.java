@@ -132,6 +132,24 @@ public class DBUtils {
         return null;
     }
     
+    public static Thread findThread(Connection conn, int threadId) throws SQLException {
+        String sql = "Select * from thread a where threadId=?";
+ 
+        PreparedStatement pstm = conn.prepareStatement(sql);
+        pstm.setInt(1, threadId);
+ 
+        ResultSet rs = pstm.executeQuery();
+ 
+        while (rs.next()) {
+            String threadName = rs.getString("threadName");
+            String threadDetails = rs.getString("threadDetails");
+            String username = rs.getString("username");
+            Thread thread = new Thread(threadId, threadName, threadDetails, username);
+            return thread;
+        }
+        return null;
+    }
+    
     public static Post findPost(Connection conn, int threadId) throws SQLException {
         String sql = "Select * from post where threadId=?";
  
@@ -148,6 +166,17 @@ public class DBUtils {
             return post;
         }
         return null;
+    }
+    
+    public static void updateThread(Connection conn, Thread thread) throws SQLException {
+        String sql = "Update thread set threadName=?, threadDetails=? where threadId=?";
+ 
+        PreparedStatement pstm = conn.prepareStatement(sql);
+ 
+        pstm.setString(1, thread.getThreadName());
+        pstm.setString(2, thread.getThreadDetails());
+        pstm.setInt(3, thread.getThreadId());
+        pstm.executeUpdate();
     }
  
     public static void updateMedication(Connection conn, Medication medication) throws SQLException {
@@ -175,6 +204,27 @@ public class DBUtils {
         pstm.executeUpdate();
     }
     
+    public static void deleteThread(Connection conn, int threadId) throws SQLException {
+        String sql = "Delete From thread where threadId= ?";
+ 
+        PreparedStatement pstm = conn.prepareStatement(sql);
+ 
+        pstm.setInt(1, threadId);
+ 
+        pstm.executeUpdate();
+        deletePost(conn,threadId);
+    }
+    
+    public static void deletePost(Connection conn, int threadId) throws SQLException {
+        String sql = "Delete From post where threadId= ?";
+ 
+        PreparedStatement pstm = conn.prepareStatement(sql);
+ 
+        pstm.setInt(1, threadId);
+ 
+        pstm.executeUpdate();
+    }
+    
     public static List<Thread> queryThread(Connection conn) throws SQLException {
         String sql = "Select * from thread order by threadId desc;";
         
@@ -187,6 +237,25 @@ public class DBUtils {
             String threadName = rs.getString("threadName");
             String threadDetails = rs.getString("threadDetails");
             String username = rs.getString("username");
+                Thread thread = new Thread(threadId, threadName, threadDetails, username);
+                list.add(thread);
+            
+        }
+        return list;
+    }
+    
+    public static List<Thread> queryMyThread(Connection conn, String username) throws SQLException {
+        String sql = "Select * from thread where username=? order by threadId desc;";
+        
+        PreparedStatement pstm = conn.prepareStatement(sql);
+        pstm.setString(1, username);
+        
+        ResultSet rs = pstm.executeQuery();
+        List<Thread> list = new ArrayList<>();
+        while (rs.next()) {
+            int threadId = rs.getInt("threadId");
+            String threadName = rs.getString("threadName");
+            String threadDetails = rs.getString("threadDetails");
                 Thread thread = new Thread(threadId, threadName, threadDetails, username);
                 list.add(thread);
             
