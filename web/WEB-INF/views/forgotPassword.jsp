@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -7,7 +8,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <meta name="description" content="">
   <meta name="author" content="">
-  <title>Login</title>
+  <title>Cozy : Forgot Password</title>
   <!-- Bootstrap core CSS-->
   <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
   <!-- Custom fonts for this template-->
@@ -19,29 +20,22 @@
 <body class="bg-dark">
   <div class="container">
     <div class="card card-login mx-auto mt-5">
-      <div class="card-header">Login</div>
+      <div class="card-header">Reset Password</div>
       <div class="card-body">
-          <form action="${pageContext.request.contextPath}/login" method="post">
+        <div class="text-center mt-4 mb-5">
+          <h4>Forgot your password?</h4>
+          <p>Enter your email address and we will send you your password to your email.</p>
+        </div>
+        <form action="forgotPassword" method="post">
           <div class="form-group">
-            <label for="username">Username</label>
-            <input class="form-control" name="username" type="text" aria-describedby="usernameHelp" placeholder="Enter username" required autofocus>
+            <input class="form-control" name="email" id="email" type="email" aria-describedby="emailHelp" placeholder="Enter email address" required>
           </div>
-          <div class="form-group">
-            <label for="password">Password</label>
-            <input class="form-control" name="password" type="password" placeholder="Password" required>
-          </div>
-            <div class="form-group">
-               <label for="rememberMe"> Remember me</label>
-               <input type="checkbox" name="rememberMe" value= "Y" />
-            </div>
-          <p style="color: red;">${errorString}</p>
-          <center>
-          <input type="submit" value="Login">
-          </center>
+          <input type="submit" value="Reset Password" style="width: 100%;background-color: #007bff;color:white;padding:5px;font-size:18px;border:none;padding:8px;">
+                
         </form>
         <div class="text-center">
-          <a class="d-block small mt-3" href="${pageContext.request.contextPath}/register">Register an Account</a>
-          <a class="d-block small" href="forgotPassword">Forgot Password?</a>
+          <a class="d-block small mt-3" href="register">Register an Account</a>
+          <a class="d-block small" href="login">Login Page</a>
         </div>
       </div>
     </div>
