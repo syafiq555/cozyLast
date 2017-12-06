@@ -16,7 +16,6 @@
 
     <title>Forum</title>
     <!-- Bootstrap core CSS-->
-
     <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <!-- Custom fonts for this template-->
     <link href="vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
@@ -38,47 +37,68 @@
           <a>FORUM</a>
         </li>
       </ol>
-	  
-	
-	 
-	  
+      ${errorString}
+      <div class="col-lg-12">
+        <form action="forumSearch">
+          <div class="input-group">
+            <input class="form-control" type="text" placeholder="Search forum" name="string">
+            <span class="input-group-btn">
+              <button class="btn btn-danger" type="input">
+                <i class="fa fa-search"></i>
+              </button>
+            </span>
+          </div>
+        </form><br>
+        <div class="col-lg-12">
+            <a class="btn btn-primary btn-block" href="myForum">Click here to view your Threads</a>
+        </div>
+      </div>
+      
+      <br>
       <div class="row">
-          
-		
-        <div class="col-lg-8">
+        <div class="col-lg-12">
+            
             <!-- Example Notifications Card-->
             <div class="card mb-3">
               <div class="card-header">
                 <i class="fa fa-fw fa-list"></i> &nbsp;&nbsp;&nbsp;&nbsp; THREAD</div>
                     <div class="list-group list-group-flush medium">
-                        <c:forEach var="thread" items="${requestScope.list}" begin="0" end="5">
-                            <a class="list-group-item list-group-item-action" href="#">
+                        <c:forEach var="thread" items="${requestScope.list}" begin="0" end="4">
+                            <a class="list-group-item list-group-item-action" href="forumDetails?threadId=<c:out value="${thread.threadId}"/>&threadName=<c:out value="${thread.threadName}"/>&threadDetails=<c:out value="${thread.threadDetails}"/>&username=<c:out value="${thread.username}"/>">
                               <div class="media">
                                   <div class="media-body">
                                   <div> <strong><c:out value="${thread.threadName.toUpperCase()}"/></strong> </div>
-                                  <c:out value="${thread.username}"/>: <c:out value="${thread.threadDetails}"/>
+                                  <strong><c:out value="${thread.username}"/></strong>  : <c:out value="${thread.threadDetails}"/>
                                   <div class="text-muted smaller">Today at 5:43 PM - 5m ago</div>
                                 </div>
                               </div>
                             </a>
                         </c:forEach>
+                        <a class="list-group-item list-group-item-action" href="forum?all=true">View all thread...</a>
                     </div>
                 </div>
             
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item">
+                        <a>POST NEW THREAD</a>
+                    </li>
+                </ol>
+                <form action="addThread" method="post">
+                    <div class="card mb-3">
+                        <input type="text" placeholder="Thread's title" required name='threadName' class="form-control">
+                    </div>
+                    <div class="card mb-3">
+                        <textarea class="form-control" required name="threadDetails" id="newThread" style="width:100%;height:150px;background-color: #004085; color:olive;border:none;padding:2%;font:18px/25px sans-serif;background:url('/pix/samples/bubble2.gif');"placeholder="Add new thread..."></textarea>  
+                    </div>
+                    <input type="submit" value="Submit" style="width: 100%;background-color: #007bff;color:white;padding:5px;font-size:18px;border:none;padding:8px;">
+                </form>
+            
         </div>
       </div>
-	  
-	  
-	  
- 
-          </div>
-        </div>
-        
-      </div>
+            <br>
     </div>
-	
-	
-	
+   </div>
+            
     <!-- /.container-fluid-->
     <!-- /.content-wrapper-->
     <footer class="sticky-footer">

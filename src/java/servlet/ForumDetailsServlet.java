@@ -1,6 +1,7 @@
 package servlet;
 
-import beans.Thread;
+import beans.Post;
+import beans.ThreadPost;
 import beans.User;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -19,29 +20,39 @@ import utils.MyUtils;
 import java.util.ArrayList;
 import java.util.List;
  
-@WebServlet(urlPatterns = { "/forum"})
-public class ForumServlet extends HttpServlet {
+@WebServlet(urlPatterns = { "/forumDetails"})
+public class ForumDetailsServlet extends HttpServlet {
    private static final long serialVersionUID = 1L;
  
-   public ForumServlet() {
+   public ForumDetailsServlet() {
        super();
    }
  
    @Override
    protected void doGet(HttpServletRequest request, HttpServletResponse response)
            throws ServletException, IOException {
-        boolean all = Boolean.parseBoolean(request.getParameter("all"));
-        
-        String link = "/WEB-INF/views/forum.jsp";
+ 
         HttpSession session = request.getSession();
         User userInSession = MyUtils.getLoginedUser(session);
         boolean hasError = false;
         String errorString = null;
-        List<Thread> list = null;
-        
-        if(all == true){
-            link = "/WEB-INF/views/allForum.jsp";
+        List<ThreadPost> list = null;
+        Post post = null;
+        int threadId = 0;
+        try{
+            threadId = Integer.parseInt(request.getParameter("threadId"));
+        }catch(Exception e){
+            hasError = true;
+            errorString = e.getMessage();
+            
+            request.setAttribute("errorString", errorString);
+ 
+            // Forward to /WEB-INF/views/login.jsp
+            RequestDispatcher dispatcher //
+                    = this.getServletContext().getRequestDispatcher("/WEB-INF/views/forum.jsp");
+            dispatcher.forward(request, response);
         }
+        
         if (userInSession == null) {
             hasError = true;
             errorString = "Please re-login to continue using this service";
@@ -62,10 +73,21 @@ public class ForumServlet extends HttpServlet {
         else {
             // Redirect to userInfo page.
             Connection conn = MyUtils.getStoredConnection(request);
-            String username = userInSession.getUsername();
             try {
-                list = DBUtils.queryThread(conn);
-                
+                list = DBUtils.queryThreadPost(conn, threadId);
+                if(list.isEmpty()){
+                    hasError = true;
+                    errorString = "No post yet!";
+                    
+                    post = DBUtils.findPost(conn,threadId);
+                    
+                    request.setAttribute("errorString", errorString);
+                    request.setAttribute("post", post);
+                    RequestDispatcher dispatcher //
+                        = this.getServletContext().getRequestDispatcher("/WEB-INF/views/ForumDetails.jsp");
+                    dispatcher.forward(request, response);
+                }
+                    
             } catch (SQLException e) {
                 PrintWriter out=response.getWriter();
                 out.println(e);
@@ -79,7 +101,7 @@ public class ForumServlet extends HttpServlet {
             //request.setAttribute("medicationName", medicationName);
             request.setAttribute("list", list);
             RequestDispatcher dispatcher //
-                = this.getServletContext().getRequestDispatcher(link);
+                = this.getServletContext().getRequestDispatcher("/WEB-INF/views/ForumDetails.jsp");
             dispatcher.forward(request, response);
         }
         

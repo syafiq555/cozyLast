@@ -19,29 +19,33 @@ import utils.MyUtils;
 import java.util.ArrayList;
 import java.util.List;
  
-@WebServlet(urlPatterns = { "/forum"})
-public class ForumServlet extends HttpServlet {
+@WebServlet (urlPatterns = {"/threadDetails"})
+public class ThreadDetailsServlet extends HttpServlet {
    private static final long serialVersionUID = 1L;
  
-   public ForumServlet() {
+   public ThreadDetailsServlet() {
        super();
    }
  
    @Override
    protected void doGet(HttpServletRequest request, HttpServletResponse response)
            throws ServletException, IOException {
-        boolean all = Boolean.parseBoolean(request.getParameter("all"));
-        
-        String link = "/WEB-INF/views/forum.jsp";
+       
         HttpSession session = request.getSession();
         User userInSession = MyUtils.getLoginedUser(session);
         boolean hasError = false;
         String errorString = null;
-        List<Thread> list = null;
-        
-        if(all == true){
-            link = "/WEB-INF/views/allForum.jsp";
+        Thread thread = null;
+        int threadId = 0;
+        try{
+            threadId = Integer.parseInt(request.getParameter("threadId"));
+        }catch(NumberFormatException e){
+            PrintWriter out = response.getWriter();
+            out.println(threadId+" "+e);
+            e.printStackTrace();
+            
         }
+        
         if (userInSession == null) {
             hasError = true;
             errorString = "Please re-login to continue using this service";
@@ -62,24 +66,23 @@ public class ForumServlet extends HttpServlet {
         else {
             // Redirect to userInfo page.
             Connection conn = MyUtils.getStoredConnection(request);
-            String username = userInSession.getUsername();
             try {
-                list = DBUtils.queryThread(conn);
-                
-            } catch (SQLException e) {
+                thread = DBUtils.findThread(conn, threadId);
+                    
+            } catch (Exception e) {
                 PrintWriter out=response.getWriter();
                 out.println(e);
                 e.printStackTrace();
                 errorString = e.getMessage();
             }
-          //  String medicationName = list.get(0).getMedicationName();
-            //errorString = medicationName;
+          //  String threadName = list.get(0).getThreadName();
+            //errorString = threadName;
             // Store info in request attribute, before forward to views
             request.setAttribute("errorString", errorString);
-            //request.setAttribute("medicationName", medicationName);
-            request.setAttribute("list", list);
+            //request.setAttribute("threadName", threadName);
+            request.setAttribute("thread", thread);
             RequestDispatcher dispatcher //
-                = this.getServletContext().getRequestDispatcher(link);
+                = this.getServletContext().getRequestDispatcher("/WEB-INF/views/threadDetails.jsp");
             dispatcher.forward(request, response);
         }
         

@@ -1,16 +1,20 @@
 <!DOCTYPE html>
 <html lang="en">
+    
+
 <head>
     <%@page import="java.util.ArrayList" %>
     <%@page import="java.util.List" %>
-    <%@page import="beans.Medication" %>
+    <%@page import="beans.Thread" %>
     <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+    
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="">
-    <title>View</title>
+
+    <title>Forum</title>
     <!-- Bootstrap core CSS-->
     <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <!-- Custom fonts for this template-->
@@ -22,7 +26,7 @@
 </head>
 
 <body class="fixed-nav sticky-footer bg-dark" id="page-top">
-  <jsp:include page="_header.jsp"></jsp:include>
+  <jsp:include page="_header.jsp"></jsp:include>  
   <div class="content-wrapper">
     <div class="container">
 	
@@ -30,34 +34,38 @@
       <!-- Breadcrumbs-->
       <ol class="breadcrumb">
         <li class="breadcrumb-item">
-          <a>Your reminder</a>
+          <a>FORUM</a>
         </li>
       </ol>
-      <!-- Icon Cards-->
-      <p style="color: red;">${errorString}</p>
+      ${errorString}
       <div class="row">
-          <c:forEach var="medication" items="${requestScope.list}">
-            <div class="col-xl-3 col-sm-6 mb-3">
-                <div class="card text-white bg-danger o-hidden h-100">
-                  <div class="card-body">
-                    <div class="mr-5"> <c:out value="${medication.medicationName.toUpperCase()}"/></div>
-                  </div>
-                  <a class="card-footer text-white clearfix small z-1" href="details?medicationId=<c:out value="${medication.medicationId}"/>">
-                    <span class="float-left">Click for details</span>
-                    <span class="float-right">
-                      <i class="fa fa-angle-right"></i>
-                    </span>
-                  </a>
+        <div class="col-lg-8">
+            
+            <!-- Example Notifications Card-->
+            <div class="card mb-3">
+              <div class="card-header">
+                <i class="fa fa-fw fa-list"></i> &nbsp;&nbsp;&nbsp;&nbsp; THREAD</div>
+                    <div class="list-group list-group-flush medium">
+                        <c:forEach var="thread" items="${requestScope.list}">
+                            <a class="list-group-item list-group-item-action" href="forumDetails?threadId=<c:out value="${thread.threadId}"/>">
+                              <div class="media">
+                                  <div class="media-body">
+                                  <div> <strong><c:out value="${thread.threadName.toUpperCase()}"/></strong> </div>
+                                  <strong><c:out value="${thread.username}"/></strong>  : <c:out value="${thread.threadDetails}"/>
+                                  <div class="text-muted smaller">Today at 5:43 PM - 5m ago</div>
+                                </div>
+                              </div>
+                            </a>
+                        </c:forEach>
+                    </div>
                 </div>
-            </div>
-          </c:forEach>
-          &nbsp;&nbsp;&nbsp;<p><a href="create">Click here to Create Reminder</a></p>
+            
         </div>
-      
-        </div>
-        
       </div>
-    
+            <br>
+    </div>
+   </div>
+            
     <!-- /.container-fluid-->
     <!-- /.content-wrapper-->
     <footer class="sticky-footer">
@@ -76,7 +84,7 @@
     </a>
 	
     <jsp:include page="_logoutModal.jsp"></jsp:include>
-    
+	
     <!-- Bootstrap core JavaScript-->
     <script src="vendor/jquery/jquery.min.js"></script>
     <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>

@@ -1,5 +1,6 @@
 package servlet;
 
+import beans.Post;
 import beans.Thread;
 import beans.User;
 import java.io.IOException;
@@ -19,33 +20,43 @@ import utils.MyUtils;
 import java.util.ArrayList;
 import java.util.List;
  
-@WebServlet(urlPatterns = { "/forum"})
-public class ForumServlet extends HttpServlet {
+@WebServlet(urlPatterns = { "/forumSearch"})
+public class forumSearchServlet extends HttpServlet {
    private static final long serialVersionUID = 1L;
  
-   public ForumServlet() {
+   public forumSearchServlet() {
        super();
    }
  
    @Override
    protected void doGet(HttpServletRequest request, HttpServletResponse response)
            throws ServletException, IOException {
-        boolean all = Boolean.parseBoolean(request.getParameter("all"));
-        
-        String link = "/WEB-INF/views/forum.jsp";
+ 
         HttpSession session = request.getSession();
         User userInSession = MyUtils.getLoginedUser(session);
         boolean hasError = false;
         String errorString = null;
         List<Thread> list = null;
+        String string = request.getParameter("string");
         
-        if(all == true){
-            link = "/WEB-INF/views/allForum.jsp";
-        }
         if (userInSession == null) {
             hasError = true;
             errorString = "Please re-login to continue using this service";
         }
+        
+        if(string == null){
+            hasError = true;
+            errorString = "You search for an empty string!";
+            
+            request.setAttribute("errorString", errorString);
+ 
+            // Forward to /WEB-INF/views/login.jsp
+            RequestDispatcher dispatcher //
+                    = this.getServletContext().getRequestDispatcher("/WEB-INF/views/forum.jsp");
+ 
+            dispatcher.forward(request, response);
+        }
+        
         if (hasError) {
             // Store information in request attribute, before forward.
             request.setAttribute("errorString", errorString);
@@ -62,10 +73,18 @@ public class ForumServlet extends HttpServlet {
         else {
             // Redirect to userInfo page.
             Connection conn = MyUtils.getStoredConnection(request);
-            String username = userInSession.getUsername();
             try {
-                list = DBUtils.queryThread(conn);
-                
+                list = DBUtils.searchThread(conn, string);
+                if(list.isEmpty()){
+                    hasError = true;
+                    errorString = "There's no thread named "+string+" that you are looking for";
+                    
+                    request.setAttribute("errorString", errorString);
+                    RequestDispatcher dispatcher //
+                        = this.getServletContext().getRequestDispatcher("/WEB-INF/views/forum.jsp");
+                    dispatcher.forward(request, response);
+                }
+                    
             } catch (SQLException e) {
                 PrintWriter out=response.getWriter();
                 out.println(e);
@@ -79,7 +98,7 @@ public class ForumServlet extends HttpServlet {
             //request.setAttribute("medicationName", medicationName);
             request.setAttribute("list", list);
             RequestDispatcher dispatcher //
-                = this.getServletContext().getRequestDispatcher(link);
+                = this.getServletContext().getRequestDispatcher("/WEB-INF/views/searchedForum.jsp");
             dispatcher.forward(request, response);
         }
         

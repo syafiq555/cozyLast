@@ -96,7 +96,7 @@
                 
                 
 
-                <input type="submit" value="Confirm Edit" style="width: 40 em;  height: 2em; color: white; background-color: #1538EE;">
+                <input type="submit" value="Confirm Edit" style="width: 100%;background-color: #007bff;color:white;padding:5px;font-size:18px;border:none;padding:8px;">
                 </div>
             </form>
         <p style="color: red;">${errorString}</p>

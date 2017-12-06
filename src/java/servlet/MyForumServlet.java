@@ -19,29 +19,25 @@ import utils.MyUtils;
 import java.util.ArrayList;
 import java.util.List;
  
-@WebServlet(urlPatterns = { "/forum"})
-public class ForumServlet extends HttpServlet {
+@WebServlet(urlPatterns = { "/myForum"})
+public class MyForumServlet extends HttpServlet {
    private static final long serialVersionUID = 1L;
  
-   public ForumServlet() {
+   public MyForumServlet() {
        super();
    }
  
    @Override
    protected void doGet(HttpServletRequest request, HttpServletResponse response)
            throws ServletException, IOException {
-        boolean all = Boolean.parseBoolean(request.getParameter("all"));
         
-        String link = "/WEB-INF/views/forum.jsp";
+        String link = "/WEB-INF/views/myForum.jsp";
         HttpSession session = request.getSession();
         User userInSession = MyUtils.getLoginedUser(session);
         boolean hasError = false;
         String errorString = null;
         List<Thread> list = null;
         
-        if(all == true){
-            link = "/WEB-INF/views/allForum.jsp";
-        }
         if (userInSession == null) {
             hasError = true;
             errorString = "Please re-login to continue using this service";
@@ -64,7 +60,14 @@ public class ForumServlet extends HttpServlet {
             Connection conn = MyUtils.getStoredConnection(request);
             String username = userInSession.getUsername();
             try {
-                list = DBUtils.queryThread(conn);
+                list = DBUtils.queryMyThread(conn,username);
+                if(list.isEmpty()){
+                    errorString = "There's no your thread yet! Create your thread first!";
+                    request.setAttribute("errorString", errorString);
+                    RequestDispatcher dispatcher //
+                        = this.getServletContext().getRequestDispatcher(link);
+                    dispatcher.forward(request, response);
+                }
                 
             } catch (SQLException e) {
                 PrintWriter out=response.getWriter();
