@@ -345,4 +345,32 @@ public class DBUtils {
         }
         return list;
     }
+    
+    public static String findPassword(Connection conn, String email) throws SQLException{
+        String sql = "Select password from user where email=?";
+        String password = null;
+        PreparedStatement pstm = conn.prepareStatement(sql);
+        pstm.setString(1,email);
+        
+        ResultSet rs = pstm.executeQuery();
+        
+        if(rs.next()){
+            password = rs.getString("password");
+        }
+        return password;
+    }
+    
+    public static String findUsername(Connection conn, String email) throws SQLException{
+        String sql = "Select username from user where email=?";
+        String username = null;
+        PreparedStatement pstm = conn.prepareStatement(sql);
+        pstm.setString(1,email);
+        
+        ResultSet rs = pstm.executeQuery();
+        
+        if(rs.next()){
+            username = rs.getString("username");
+        }
+        return username;
+    }
 }
